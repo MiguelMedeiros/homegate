@@ -26,6 +26,7 @@ A modern, responsive web application built with Next.js 15 that serves as a gate
 
 - Node.js 18+ 
 - npm, yarn, or pnpm
+- Prelude API token for SMS verification
 
 ### Installation
 
@@ -40,12 +41,25 @@ cd home-gate/front-end
 npm install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+```bash
+# Create .env.local file
+cp .env.example .env.local
+```
+
+4. Configure your environment variables in `.env.local`:
+```bash
+# Prelude SMS Verification API Token
+# Get your API token from https://prelude.so
+PRELUDE_API_TOKEN=your_prelude_api_token_here
+```
+
+5. Run the development server:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
 > **Note**: This project is part of a monorepo. Make sure you're in the `front-end` directory.
 

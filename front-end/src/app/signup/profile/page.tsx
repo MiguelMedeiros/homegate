@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +28,25 @@ export default function ProfilePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pubkyResult, setPubkyResult] = useState<CreateUserResult | null>(null);
   const [error, setError] = useState<PubkyErrorInfo | null>(null);
+  const [smsVerified, setSmsVerified] = useState<boolean | null>(null);
+
+  // Check SMS verification status on component mount
+  useEffect(() => {
+    const checkSmsVerification = () => {
+      const verified = localStorage.getItem("sms_verified");
+      const phone = localStorage.getItem("verified_phone");
+      
+      if (verified === "true" && phone) {
+        setSmsVerified(true);
+      } else {
+        setSmsVerified(false);
+        // Redirect to SMS verification if not verified
+        router.push("/signup/free/verify");
+      }
+    };
+
+    checkSmsVerification();
+  }, [router]);
 
   const {
     register,
@@ -123,6 +142,42 @@ export default function ProfilePage() {
     }
   };
 
+  // Show loading state while checking SMS verification
+  if (smsVerified === null) {
+    return (
+      <div className="relative flex min-h-screen flex-col bg-background">
+        {/* Background */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-size-[4rem_4rem]" />
+        <div className="absolute inset-0 -z-10 bg-linear-to-br from-brand/5 via-transparent to-brand/10" />
+        
+        <Header 
+          rightContent={
+            <Link href="/signup/free">
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                Back
+              </Button>
+            </Link>
+          }
+        />
+
+        {/* Main Content */}
+        <main className="container relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-16 mx-auto">
+          <div className="mx-auto flex w-full max-w-md flex-col items-center text-center">
+            <div className="h-16 w-16 animate-spin rounded-full border-4 border-brand/20 border-t-brand"></div>
+            <p className="mt-4 text-muted-foreground">Verifying SMS...</p>
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    );
+  }
+
+  // Don't render the form if SMS is not verified
+  if (smsVerified === false) {
+    return null; // Will redirect to SMS verification
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col bg-background">
       {/* Background */}
@@ -131,7 +186,7 @@ export default function ProfilePage() {
       
       <Header 
         rightContent={
-          <Link href="/signup/free">
+          <Link href="/signup/free/verify">
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
               Back
             </Button>
