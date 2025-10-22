@@ -199,7 +199,7 @@ export default function FreeSignUpPage() {
 
           {/* Continue Button - Only shows after verification */}
           {isVerified && (
-            <Link href="/signup/free/next" className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4">
+            <Link href="/signup/free/profile" className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4">
               <Button
                 size="lg"
                 className="cursor-pointer w-full bg-brand text-background text-xl hover:bg-brand/90"

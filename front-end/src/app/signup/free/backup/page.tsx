@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { useProfile } from "@/contexts/ProfileContext";
 import {
   Dialog,
   DialogContent,
@@ -23,7 +26,9 @@ const MOCK_SEED_PHRASE = [
   "absorb", "abstract", "absurd", "abuse", "access", "accident"
 ];
 
-export default function FreeNextPage() {
+export default function FreeBackupPage() {
+  const router = useRouter();
+  const { profile } = useProfile();
   const [publicKey] = useState(MOCK_PUBLIC_KEY);
   const [copied, setCopied] = useState(false);
 
@@ -42,6 +47,12 @@ export default function FreeNextPage() {
   const [verificationWords, setVerificationWords] = useState<string[]>(Array(12).fill(""));
   const [verificationStep, setVerificationStep] = useState<"view" | "verify">("view");
   const allWordsMatch = verificationWords.every((word, index) => word.toLowerCase() === MOCK_SEED_PHRASE[index]);
+
+  // Redirect if no profile (after all hooks)
+  if (!profile) {
+    router.push("/signup/free/profile");
+    return null;
+  }
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(publicKey);
@@ -69,8 +80,8 @@ export default function FreeNextPage() {
   return (
     <div className="relative flex min-h-screen flex-col bg-background">
       {/* Background */}
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-brand/5 via-transparent to-brand/10" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-size-[4rem_4rem]" />
+      <div className="absolute inset-0 -z-10 bg-linear-to-br from-brand/5 via-transparent to-brand/10" />
       
       <Header 
         rightContent={
@@ -101,41 +112,63 @@ export default function FreeNextPage() {
           
           {/* Subtitle */}
           <p className="mb-12 text-lg text-muted-foreground">
-            Save your public key and backup your seed phrase to secure your identity
+            Backup your seed phrase to secure your identity
           </p>
 
-          {/* Public Key Display */}
+          {/* Profile Display */}
           <div className="mb-12 w-full">
-            <label className="mb-3 block text-left text-sm font-medium text-muted-foreground">
-              Your Public Key
-            </label>
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
-                value={publicKey}
-                readOnly
-                className="flex-1 h-14 rounded-xl border-2 border-border/50 bg-card/30 px-4 text-sm font-mono backdrop-blur-sm cursor-default focus:outline-none focus:border-brand/50"
-              />
-              <Button
-                onClick={handleCopy}
-                className="h-13 bg-brand text-background hover:bg-brand/90 cursor-pointer"
-              >
-                {copied ? (
-                  <>
-                    <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                    Copy
-                  </>
-                )}
-              </Button>
+            <div className="flex flex-col items-center gap-4 rounded-2xl border-2 border-brand/20 bg-card/30 p-8 backdrop-blur-sm">
+              {/* Avatar */}
+              {profile.avatar ? (
+                <div className="relative h-24 w-24 overflow-hidden rounded-full border-4 border-brand/20">
+                  <Image
+                    src={profile.avatar}
+                    alt={profile.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="flex h-24 w-24 items-center justify-center rounded-full border-4 border-brand/20 bg-brand/10">
+                  <span className="text-4xl font-bold text-brand">
+                    {profile.name.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
+              
+              {/* Name */}
+              <div className="text-center">
+                <h2 className="text-2xl font-bold">{profile.name}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Your Pubky Identity</p>
+              </div>
+
+              {/* Public Key (smaller, less prominent) */}
+              <details className="w-full">
+                <summary className="cursor-pointer text-xs text-muted-foreground hover:text-foreground transition-colors text-center">
+                  View Public Key
+                </summary>
+                <div className="mt-4 flex items-center gap-2">
+                  <code className="flex-1 truncate rounded-lg bg-background/50 px-3 py-2 text-xs font-mono">
+                    {publicKey}
+                  </code>
+                  <Button
+                    onClick={handleCopy}
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-8 p-0"
+                  >
+                    {copied ? (
+                      <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                    )}
+                  </Button>
+                </div>
+              </details>
             </div>
           </div>
 
@@ -407,7 +440,7 @@ export default function FreeNextPage() {
                 size="lg"
                 className="w-full bg-brand text-background text-xl hover:bg-brand/90 cursor-pointer"
               >
-                Create your profile and start using Pubky!
+                You are all set! Click to go to your dashboard!
                 <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
