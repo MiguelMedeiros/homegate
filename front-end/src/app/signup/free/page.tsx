@@ -109,12 +109,12 @@ export default function FreeSignUpPage() {
 
           {/* Title */}
           <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            verify you&apos;re human
+            Prove you are human
           </h1>
           
           {/* Subtitle */}
           <p className="mb-12 text-lg text-muted-foreground">
-            Complete the challenge below to continue
+            Complete the math challenge below to continue
           </p>
 
           {/* Captcha Container */}
@@ -189,7 +189,7 @@ export default function FreeSignUpPage() {
                   </div>
                   
                   <div className="text-center">
-                    <h3 className="mb-2 text-2xl font-bold text-brand">Verified!</h3>
+                    <h3 className="mb-2 text-2xl font-bold text-brand">Done!</h3>
                     <p className="text-muted-foreground">You&apos;re ready to continue</p>
                   </div>
                 </div>
@@ -201,13 +201,10 @@ export default function FreeSignUpPage() {
           {isVerified && (
             <Link href="/signup/free/verify" className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4">
               <Button
-                size="lg"
-                className="cursor-pointer w-full bg-brand text-background text-xl hover:bg-brand/90"
+                size="sm"
+                className="cursor-pointer w-full bg-brand text-background text-sm hover:bg-brand/90 h-10"
               >
-                You are verified! Click to sign up!
-                <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+                Next
               </Button>
             </Link>
           )}
