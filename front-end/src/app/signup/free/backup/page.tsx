@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProfile } from "@/contexts/ProfileContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +30,7 @@ const MOCK_SEED_PHRASE = [
 export default function FreeBackupPage() {
   const router = useRouter();
   const { profile } = useProfile();
+  const { login } = useAuth();
   const [publicKey] = useState(MOCK_PUBLIC_KEY);
   const [copied, setCopied] = useState(false);
 
@@ -435,17 +437,21 @@ export default function FreeBackupPage() {
 
           {/* Continue Button */}
           <div className="mt-12 w-full">
-            <Link href="/">
-              <Button
-                size="lg"
-                className="w-full bg-brand text-background text-xl hover:bg-brand/90 cursor-pointer"
-              >
-                You are all set! Click to go to your dashboard!
-                <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Button>
-            </Link>
+            <Button
+              onClick={() => {
+                // Mark as authenticated with free plan
+                login("free", publicKey);
+                // Navigate to dashboard
+                router.push("/dashboard");
+              }}
+              size="lg"
+              className="w-full bg-brand text-background text-xl hover:bg-brand/90 cursor-pointer"
+            >
+              You are all set! Click to go to your dashboard!
+              <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Button>
           </div>
         </div>
       </main>
