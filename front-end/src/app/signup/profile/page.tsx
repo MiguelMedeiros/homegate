@@ -103,7 +103,7 @@ export default function ProfilePage() {
       }
       
       // Navigate to backup page with the generated data
-      router.push("/signup/free/backup");
+      router.push("/signup/backup");
     } catch (err) {
       console.error("Pubky user creation failed:", err);
       console.error("Error type:", typeof err);

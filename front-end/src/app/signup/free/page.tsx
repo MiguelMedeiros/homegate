@@ -82,8 +82,8 @@ export default function FreeSignUpPage() {
   return (
     <div className="relative flex min-h-screen flex-col bg-background">
       {/* Background */}
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-brand/5 via-transparent to-brand/10" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-size-[4rem_4rem]" />
+      <div className="absolute inset-0 -z-10 bg-linear-to-br from-brand/5 via-transparent to-brand/10" />
       
       <Header 
         rightContent={
@@ -199,7 +199,7 @@ export default function FreeSignUpPage() {
 
           {/* Continue Button - Only shows after verification */}
           {isVerified && (
-            <Link href="/signup/free/profile" className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4">
+            <Link href="/signup/profile" className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4">
               <Button
                 size="lg"
                 className="cursor-pointer w-full bg-brand text-background text-xl hover:bg-brand/90"

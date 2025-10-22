@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const response = await fetch('https://admin.homeserver.staging.pubky.app/generate_signup_token', {
       method: 'GET',

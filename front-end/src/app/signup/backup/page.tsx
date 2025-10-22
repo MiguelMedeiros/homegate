@@ -21,7 +21,7 @@ import {
 
 // These will be replaced with real data from the signup flow
 
-export default function FreeBackupPage() {
+export default function BackupPage() {
   const router = useRouter();
   const { profile } = useProfile();
   const { login } = useAuth();
@@ -89,13 +89,13 @@ export default function FreeBackupPage() {
     
     if (!profile) {
       console.log("No profile found, redirecting to profile page");
-      router.push("/signup/free/profile");
+      router.push("/signup/profile");
       return;
     }
     
     if (!publicKey || seedPhrase.length === 0) {
       console.log("No Pubky data found, redirecting to profile page");
-      router.push("/signup/free/profile");
+      router.push("/signup/profile");
       return;
     }
     
