@@ -123,116 +123,119 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          {/* Profile Card */}
-          <div className="mb-8 rounded-2xl border-2 border-brand/20 bg-card/30 p-8 backdrop-blur-sm">
-            <div className="flex flex-col items-center gap-6">
-              {/* Avatar - Large and Prominent */}
-              <div className="shrink-0">
-                {profile.avatar ? (
-                  <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-brand/20">
-                    <Image
-                      src={profile.avatar}
-                      alt={profile.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-brand/20 bg-brand/10">
-                    <span className="text-5xl font-bold text-brand">
-                      {profile.name.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Profile Info - Centered */}
-              <div className="w-full text-center">
-                <h2 className="mb-2 text-3xl font-bold">{profile.name}</h2>
-                <p className="mb-6 text-sm text-muted-foreground">Your Pubky Identity</p>
-                
-                {/* Pubky.app Link - Prominent */}
-                <div className="mb-6">
-                  <a
-                    href={pubkyAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg bg-brand/10 px-4 py-2 text-sm font-medium text-brand transition-all hover:bg-brand/20"
-                  >
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    View on Pubky.app
-                  </a>
+          {/* Two Column Layout */}
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* Profile Card */}
+            <div className="rounded-2xl border-2 border-brand/20 bg-card/30 p-8 backdrop-blur-sm">
+              <div className="flex flex-col items-center gap-6">
+                {/* Avatar - Large and Prominent */}
+                <div className="shrink-0">
+                  {profile.avatar ? (
+                    <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-brand/20">
+                      <Image
+                        src={profile.avatar}
+                        alt={profile.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-brand/20 bg-brand/10">
+                      <span className="text-5xl font-bold text-brand">
+                        {profile.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Public Key - Truncated with Copy */}
-                <div className="flex items-center justify-center gap-2 text-sm">
-                  <span className="font-mono text-muted-foreground">
-                    {auth.publicKey!.slice(0, 10)}...{auth.publicKey!.slice(-10)}
-                  </span>
-                  <Button
-                    onClick={handleCopyPublicKey}
-                    size="sm"
-                    variant="ghost"
-                    className="h-6 w-6 p-0 cursor-pointer"
-                    title="Copy Public Key"
-                  >
-                    {copied ? (
-                      <svg className="h-4 w-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* Profile Info - Centered */}
+                <div className="w-full text-center">
+                  <h2 className="mb-2 text-3xl font-bold">{profile.name}</h2>
+                  <p className="mb-6 text-sm text-muted-foreground">Your Pubky Identity</p>
+                  
+                  {/* Pubky.app Link - Prominent */}
+                  <div className="mb-6">
+                    <a
+                      href={pubkyAppUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg bg-brand/10 px-4 py-2 text-sm font-medium text-brand transition-all hover:bg-brand/20"
+                    >
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      View on Pubky.app
+                    </a>
+                  </div>
+
+                  {/* Public Key - Truncated with Copy */}
+                  <div className="flex items-center justify-center gap-2 text-sm">
+                    <span className="font-mono text-muted-foreground">
+                      {auth.publicKey!.slice(0, 10)}...{auth.publicKey!.slice(-10)}
+                    </span>
+                    <Button
+                      onClick={handleCopyPublicKey}
+                      size="sm"
+                      variant="ghost"
+                      className="h-6 w-6 p-0 cursor-pointer"
+                      title="Copy Public Key"
+                    >
+                      {copied ? (
+                        <svg className="h-4 w-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      ) : (
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Plan Card */}
+            <div className="rounded-2xl border-2 border-brand/20 bg-card/30 p-8 backdrop-blur-sm">
+              <div className="mb-6 flex items-center justify-between">
+                <h3 className="text-2xl font-bold">Your Plan</h3>
+                <div className="rounded-full bg-brand/20 px-4 py-1 text-sm font-medium text-brand">
+                  {planDetails.name}
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-brand">{planDetails.price}</div>
+              </div>
+
+              <div className="mb-6 space-y-3">
+                <h4 className="text-sm font-semibold text-muted-foreground">Plan Features:</h4>
+                <ul className="space-y-2">
+                  {planDetails.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <svg className="mt-0.5 h-5 w-5 shrink-0 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                    ) : (
-                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    )}
-                  </Button>
-                </div>
+                      <span className="text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          </div>
 
-          {/* Plan Card - Full Width */}
-          <div className="rounded-2xl border-2 border-brand/20 bg-card/30 p-8 backdrop-blur-sm">
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-2xl font-bold">Your Plan</h3>
-              <div className="rounded-full bg-brand/20 px-4 py-1 text-sm font-medium text-brand">
-                {planDetails.name}
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <div className="text-4xl font-bold text-brand">{planDetails.price}</div>
-            </div>
-
-            <div className="mb-6 space-y-3">
-              <h4 className="text-sm font-semibold text-muted-foreground">Plan Features:</h4>
-              <ul className="space-y-2">
-                {planDetails.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <svg className="mt-0.5 h-5 w-5 shrink-0 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="relative group">
-              <Button
-                disabled
-                variant="outline"
-                className="w-full border-brand/20 bg-background/50 cursor-not-allowed opacity-60"
-              >
-                Upgrade Plan
-              </Button>
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block">
-                <div className="bg-foreground text-background text-xs rounded-lg px-3 py-1.5 whitespace-nowrap">
-                  Coming Soon
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
-                    <div className="border-4 border-transparent border-t-foreground"></div>
+              <div className="relative group">
+                <Button
+                  disabled
+                  variant="outline"
+                  className="w-full border-brand/20 bg-background/50 cursor-not-allowed opacity-60"
+                >
+                  Upgrade Plan
+                </Button>
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block">
+                  <div className="bg-foreground text-background text-xs rounded-lg px-3 py-1.5 whitespace-nowrap">
+                    Coming Soon
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
+                      <div className="border-4 border-transparent border-t-foreground"></div>
+                    </div>
                   </div>
                 </div>
               </div>
