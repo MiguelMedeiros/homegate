@@ -8,54 +8,40 @@ const plans = [
     id: "free",
     name: "Free",
     price: "Free",
-    description: null,
+    description: "Complete captcha to verify",
     features: [
       "20MB Storage",
       "5MB Max Filesize",
       "1MB/s Speed Limit",
-      null, // Empty slot for alignment
+      "Basic file hosting",
     ],
-    highlighted: true,
+    highlighted: false,
     cta: "Get Started Free",
   },
   {
-    id: "onetime",
-    name: "One Time Payment",
-    price: "$1 Once",
-    description: null,
+    id: "basic",
+    name: "Basic",
+    price: "50,000 sats",
+    description: "~$50 USD one-time",
     features: [
       "500MB Storage",
-      "20MB Max Filesize",
-      "2MB/s Speed Limit",
-      "Pay with Bitcoin or Credit Card",
+      "50MB Max Filesize",
+      "10MB/s Speed Limit",
+      "Priority support",
     ],
-    highlighted: false,
+    highlighted: true,
     cta: "Pay Once",
-  },
-  {
-    id: "premium",
-    name: "Premium",
-    price: "$3/month",
-    description: null,
-    features: [
-      "10GB Storage",
-      "500MB Max Filesize",
-      "5MB/s Speed Limit",
-      null, // Empty slot for alignment
-    ],
-    highlighted: false,
-    cta: "Go Premium",
   },
   {
     id: "pro",
     name: "Pro",
-    price: "$30/month",
-    description: null,
+    price: "200,000 sats",
+    description: "~$200 USD one-time",
     features: [
-      "200GB Storage",
-      "∞ Max Filesize",
-      "50MB/s Speed Limit",
-      null, // Empty slot for alignment
+      "5GB Storage",
+      "500MB Max Filesize",
+      "Unlimited Speed",
+      "Priority indexing for content discovery",
     ],
     highlighted: false,
     cta: "Go Pro",
@@ -66,8 +52,8 @@ export default function SignUpPage() {
   return (
     <div className="relative flex min-h-screen flex-col bg-background">
       {/* Background */}
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-brand/5 via-transparent to-brand/10" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-size-[4rem_4rem]" />
+      <div className="absolute inset-0 -z-10 bg-linear-to-br from-brand/5 via-transparent to-brand/10" />
       
       <Header 
         rightContent={
@@ -100,7 +86,7 @@ export default function SignUpPage() {
           </p>
 
           {/* Pricing Cards */}
-          <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {plans.map((plan) => (
               <div
                 key={plan.id}
@@ -110,6 +96,7 @@ export default function SignUpPage() {
                     : "border-border/50 bg-card/30 hover:border-brand/30 hover:bg-card/40"
                 }`}
               >
+
                 {/* Plan Header */}
                 <div className="mb-6">
                   <h3 className="mb-2 text-sm font-medium text-muted-foreground">
@@ -118,6 +105,11 @@ export default function SignUpPage() {
                   <div className="text-3xl font-bold">
                     {plan.price}
                   </div>
+                  {plan.description && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {plan.description}
+                    </p>
+                  )}
                 </div>
 
                 {/* Features */}
