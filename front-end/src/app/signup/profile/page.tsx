@@ -142,6 +142,13 @@ export default function ProfilePage() {
     }
   };
 
+  const handleSkipVerification = () => {
+    // Skip SMS verification for development
+    localStorage.setItem("sms_verified", "true");
+    localStorage.setItem("verified_phone", "dev-skip");
+    setSmsVerified(true);
+  };
+
   // Show loading state while checking SMS verification
   if (smsVerified === null) {
     return (
@@ -165,6 +172,18 @@ export default function ProfilePage() {
           <div className="mx-auto flex w-full max-w-md flex-col items-center text-center">
             <div className="h-16 w-16 animate-spin rounded-full border-4 border-brand/20 border-t-brand"></div>
             <p className="mt-4 text-muted-foreground">Verifying SMS...</p>
+            
+            {/* Skip Verification Button (Development Only) */}
+            {process.env.NODE_ENV === 'development' && (
+              <Button
+                onClick={handleSkipVerification}
+                variant="outline"
+                size="sm"
+                className="mt-8 border-yellow-500/20 text-yellow-500 hover:border-yellow-500/50 hover:bg-yellow-500/5"
+              >
+                🧪 Skip SMS Verification (Dev)
+              </Button>
+            )}
           </div>
         </main>
 
