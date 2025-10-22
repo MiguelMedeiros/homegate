@@ -137,16 +137,18 @@ export default function SignUpPage() {
                 </ul>
 
                 {/* CTA Button */}
-                <Button
-                  className={`w-full cursor-pointer ${
-                    plan.highlighted
-                      ? "bg-brand text-background hover:bg-brand/90"
-                      : "border-brand/20 bg-transparent hover:bg-brand/10 hover:border-brand/50"
-                  }`}
-                  variant={plan.highlighted ? "default" : "outline"}
-                >
-                  {plan.cta}
-                </Button>
+                <Link href={`/signup/${plan.id}`} className="w-full">
+                  <Button
+                    className={`w-full cursor-pointer ${
+                      plan.highlighted
+                        ? "bg-brand text-background hover:bg-brand/90"
+                        : "border-brand/20 bg-transparent hover:bg-brand/10 hover:border-brand/50"
+                    }`}
+                    variant={plan.highlighted ? "default" : "outline"}
+                  >
+                    {plan.cta}
+                  </Button>
+                </Link>
               </div>
             ))}
           </div>
