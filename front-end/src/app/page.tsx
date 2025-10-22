@@ -26,7 +26,7 @@ export default function Home() {
 
           {/* Main Title */}
           <h1 className="mb-6 text-6xl font-bold tracking-tight sm:text-7xl lg:text-8xl">
-            Your Gateway to
+            Your Homegate to the 
             <br />
             <span className="bg-gradient-to-r from-brand via-brand/80 to-brand/60 bg-clip-text text-transparent">
               Decentralized Web
