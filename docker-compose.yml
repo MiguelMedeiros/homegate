@@ -1,0 +1,29 @@
+name: home-gate
+
+services:
+  phoenixd:
+    container_name: phoenixd
+    image: acinq/phoenixd:latest
+    ports:
+      - "9740:9740"
+    volumes:
+      - "./phoenixd:/phoenix/.phoenix"
+    restart: unless-stopped
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - phoenixd
+    volumes:
+      - ./front-end:/app
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+

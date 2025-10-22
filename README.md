@@ -39,10 +39,24 @@ See [front-end/README.md](./front-end/README.md) for detailed documentation.
 ## Development
 
 ### Prerequisites
-- Node.js 18+
-- npm, yarn, or pnpm
+- Node.js 18+ (for local development)
+- npm, yarn, or pnpm (for local development)
+- Docker & Docker Compose (for containerized development)
 
-### Getting Started
+### Option 1: Docker (Recommended)
+
+```bash
+# Start all services (frontend + phoenixd)
+docker compose up
+
+# Access the application
+# Frontend: http://localhost:3000
+# phoenixd: http://localhost:9740
+```
+
+See [DOCKER.md](./DOCKER.md) for detailed Docker documentation.
+
+### Option 2: Local Development
 
 1. **Clone the repository**
 ```bash
@@ -68,7 +82,8 @@ This is set up as a monorepo to accommodate multiple packages:
 
 ## Documentation
 
-### Package Documentation
+### Setup & Deployment
+- [Docker Guide](./DOCKER.md) - Docker Compose setup and commands
 - [Frontend Documentation](./front-end/README.md) - Frontend package details
 
 ### Project Planning & Architecture

@@ -25,6 +25,11 @@ This directory contains all project planning, architecture, and development docu
 - **[QUICKSTART.md](./QUICKSTART.md)**  
   Quick start guide to get up and running in 3 steps.
 
+### Docker & Deployment
+
+- **[DOCKER_QUICK_REFERENCE.md](./DOCKER_QUICK_REFERENCE.md)**  
+  Quick command reference for Docker Compose operations and common tasks.
+
 ## 🎯 Purpose
 
 These documents are kept in `.cursor/docs` to:
