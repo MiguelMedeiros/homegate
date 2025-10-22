@@ -2,6 +2,21 @@
 
 A monorepo for the Home Gate project - your gateway to sign up and join the Pubky homeserver network.
 
+## 🚀 Quick Start
+
+```bash
+# Start with Docker (recommended)
+make dev              # Development mode with logs
+# or
+make up               # Background mode
+
+# Access: http://localhost:3000
+```
+
+That's it! Both the frontend and phoenixd will be running.
+
+> 📚 **New to the project?** Check out [GETTING_STARTED.md](./GETTING_STARTED.md) for a complete walkthrough!
+
 ## Project Structure
 
 ```
@@ -43,18 +58,33 @@ See [front-end/README.md](./front-end/README.md) for detailed documentation.
 - npm, yarn, or pnpm (for local development)
 - Docker & Docker Compose (for containerized development)
 
-### Option 1: Docker (Recommended)
+### Option 1: Docker (Recommended) 🐳
+
+The easiest way to run the entire stack:
 
 ```bash
-# Start all services (frontend + phoenixd)
-docker compose up
+# Quick start with Makefile
+make dev              # Start with logs (recommended for development)
+make up               # Start in background
 
-# Access the application
-# Frontend: http://localhost:3000
-# phoenixd: http://localhost:9740
+# Or use Docker Compose directly
+docker compose up     # Start with logs
+docker compose up -d  # Start in background
 ```
 
-See [DOCKER.md](./DOCKER.md) for detailed Docker documentation.
+**Access the application:**
+- Frontend: http://localhost:3000
+- phoenixd API: http://localhost:9740
+
+**Other useful commands:**
+```bash
+make logs      # View logs
+make down      # Stop services
+make restart   # Restart services
+make help      # See all available commands
+```
+
+See [DOCKER.md](./DOCKER.md) for complete Docker documentation.
 
 ### Option 2: Local Development
 
@@ -80,9 +110,45 @@ This is set up as a monorepo to accommodate multiple packages:
 - **front-end**: Web application
 - **[future]**: Backend services, shared libraries, etc.
 
+## Docker Services
+
+The project includes Docker Compose configuration with the following services:
+
+### 🌐 Frontend Service
+- **Port**: 3000
+- **Container**: Next.js 15 application
+- **Features**: Hot reload, volume mounting for live development
+- **Image**: Custom build from `front-end/Dockerfile`
+
+### ⚡ phoenixd Service
+- **Port**: 9740
+- **Container**: Lightning Network node
+- **Features**: Data persistence, automatic restart
+- **Image**: `acinq/phoenixd:latest`
+- **Volume**: `./phoenixd` (automatically created, git-ignored)
+
+### Quick Commands
+
+| Command | Description |
+|---------|-------------|
+| `make dev` | Start services with logs (best for development) |
+| `make up` | Start services in background |
+| `make down` | Stop all services |
+| `make logs` | View all logs |
+| `make frontend` | View frontend logs only |
+| `make phoenixd` | View phoenixd logs only |
+| `make restart` | Restart all services |
+| `make build` | Rebuild services |
+| `make clean` | Stop and remove everything |
+| `make shell` | Open shell in frontend container |
+| `make help` | Show all available commands |
+
+> 💡 **Tip**: Use `make dev` for active development to see logs in real-time.
+
 ## Documentation
 
-### Setup & Deployment
+### Getting Started
+- [Getting Started Guide](./GETTING_STARTED.md) - Complete walkthrough for new developers
 - [Docker Guide](./DOCKER.md) - Docker Compose setup and commands
 - [Frontend Documentation](./front-end/README.md) - Frontend package details
 

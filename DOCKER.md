@@ -2,6 +2,21 @@
 
 This guide explains how to run the Home Gate project using Docker Compose.
 
+## 🚀 Quick Start (TL;DR)
+
+```bash
+# Development with logs (recommended)
+make dev
+
+# Or start in background
+make up
+
+# Stop services
+make down
+```
+
+Access: http://localhost:3000 (frontend) | http://localhost:9740 (phoenixd)
+
 ## Services
 
 The docker-compose setup includes two services:
@@ -22,19 +37,25 @@ The docker-compose setup includes two services:
 - Docker Desktop installed
 - Docker Compose v2+
 
-## Quick Start
+## Detailed Setup
 
 ### Start all services
 
+**Using Makefile (Recommended):**
 ```bash
-docker compose up
+make dev    # Start with logs (see real-time output)
+make up     # Start in background (detached mode)
 ```
 
-Or run in detached mode:
-
+**Using Docker Compose directly:**
 ```bash
-docker compose up -d
+docker compose up     # Start with logs
+docker compose up -d  # Start in background
 ```
+
+> 💡 **Which to use?**
+> - `make dev` or `docker compose up` - Best for **active development** (see logs)
+> - `make up` or `docker compose up -d` - Best when **running in background**
 
 ### Access the application
 
