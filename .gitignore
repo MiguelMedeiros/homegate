@@ -41,5 +41,6 @@ coverage/
 *.tsbuildinfo
 
 # Docker volumes
-phoenixd/
+phoenixd/*
+!.gitkeep
 
