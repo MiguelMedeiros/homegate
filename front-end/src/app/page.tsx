@@ -21,22 +21,22 @@ export default function Home() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-brand"></span>
             </span>
-            Beta - Join the Pubky Network
+            Early Access - Be Among the First
           </div>
 
           {/* Main Title */}
           <h1 className="mb-6 text-6xl font-bold tracking-tight sm:text-7xl lg:text-8xl">
-            Your Homegate to the 
+            Your Gateway to 
             <br />
             <span className="bg-gradient-to-r from-brand via-brand/80 to-brand/60 bg-clip-text text-transparent">
-              Decentralized Web
+              Freedom
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="mb-12 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Sign up for a Pubky homeserver account and take control of your digital identity. 
-            Open, secure, and truly yours.
+            Create your own key and store your data securely. 
+            No big tech, no surveillance, just you in control.
           </p>
 
           {/* Action Buttons */}
@@ -47,12 +47,12 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-r from-brand/20 via-brand/10 to-brand/20 opacity-0 transition-opacity group-hover:opacity-100" />
                 <Button
                   size="lg"
-                  className="h-52 w-full rounded-2xl bg-brand text-2xl font-semibold text-background shadow-lg shadow-brand/20 transition-all hover:scale-[1.02] hover:bg-brand/90 hover:shadow-xl hover:shadow-brand/30 sm:h-64 sm:text-3xl"
+                  className="h-24 w-full rounded-2xl bg-brand text-2xl font-semibold text-background shadow-lg shadow-brand/20 transition-all hover:scale-[1.02] hover:bg-brand/90 hover:shadow-xl hover:shadow-brand/30 sm:h-28 sm:text-3xl"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <span>Sign Up</span>
+                    <span>Get Started</span>
                     <span className="text-sm font-normal text-background/70 sm:text-base">
-                      Create your account
+                      Join the revolution
                     </span>
                   </div>
                 </Button>
@@ -66,56 +66,17 @@ export default function Home() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="h-52 w-full rounded-2xl border-2 border-border/50 bg-card/50 text-2xl font-semibold backdrop-blur-sm transition-all hover:scale-[1.02] hover:border-brand/50 hover:bg-brand/5 sm:h-64 sm:text-3xl cursor-pointer"
+                  className="h-24 w-full rounded-2xl border-2 border-border/50 bg-card/50 text-2xl font-semibold backdrop-blur-sm transition-all hover:scale-[1.02] hover:border-brand/50 hover:bg-brand/5 sm:h-28 sm:text-3xl cursor-pointer"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <span>Sign In</span>
+                    <span>Welcome Back</span>
                     <span className="text-sm font-normal text-muted-foreground sm:text-base">
-                      Already have an account
+                      Access your homeserver
                     </span>
                   </div>
                 </Button>
               </div>
             </Link>
-          </div>
-
-          {/* Features */}
-          <div className="mt-20 grid w-full max-w-4xl gap-6 sm:grid-cols-3">
-            <div className="rounded-xl border border-border/50 bg-card/30 p-6 backdrop-blur-sm transition-all hover:border-brand/30 hover:bg-card/50">
-              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                <svg className="h-5 w-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <h3 className="mb-2 font-semibold">Secure</h3>
-              <p className="text-sm text-muted-foreground">
-                End-to-end encrypted. Your data stays yours.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-border/50 bg-card/30 p-6 backdrop-blur-sm transition-all hover:border-brand/30 hover:bg-card/50">
-              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                <svg className="h-5 w-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-              </div>
-              <h3 className="mb-2 font-semibold">Decentralized</h3>
-              <p className="text-sm text-muted-foreground">
-                No single point of control or failure.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-border/50 bg-card/30 p-6 backdrop-blur-sm transition-all hover:border-brand/30 hover:bg-card/50">
-              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10">
-                <svg className="h-5 w-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="mb-2 font-semibold">Fast</h3>
-              <p className="text-sm text-muted-foreground">
-                Lightning-quick setup and performance.
-              </p>
-            </div>
           </div>
         </div>
       </main>
