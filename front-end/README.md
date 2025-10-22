@@ -32,7 +32,7 @@ A modern, responsive web application built with Next.js 15 that serves as a gate
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd home-gate
+cd home-gate/front-end
 ```
 
 2. Install dependencies:
@@ -46,6 +46,8 @@ npm run dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+
+> **Note**: This project is part of a monorepo. Make sure you're in the `front-end` directory.
 
 ## Development Commands
 
@@ -149,6 +151,14 @@ shadcn/ui is configured with:
 - Base color: Neutral
 - CSS variables for theming
 - Lucide icons library
+
+## Additional Documentation
+
+For more detailed guides and project information, see:
+- [Development Guide](../.cursor/docs/DEVELOPMENT.md) - Detailed development practices
+- [Quick Start](../.cursor/docs/QUICKSTART.md) - Get started in 3 steps
+- [Project Summary](../.cursor/docs/PROJECT_SUMMARY.md) - Complete project overview
+- [Monorepo Structure](../.cursor/docs/MONOREPO_STRUCTURE.md) - Monorepo organization
 
 ## Learn More
 
