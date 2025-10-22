@@ -119,7 +119,7 @@ export default function FreeSignUpPage() {
 
           {/* Captcha Container */}
           <div className="relative mb-8 w-full max-w-md">
-            <div className="absolute inset-0 -z-10 animate-pulse rounded-3xl bg-brand/10 blur-2xl" />
+            {/* <div className="absolute inset-0 -z-10 animate-pulse rounded-3xl bg-brand/10 blur-2xl" /> */}
             <div className="relative rounded-3xl border-2 border-brand/20 bg-card/30 p-8 backdrop-blur-sm transition-all hover:border-brand/50 hover:bg-card/50">
               {!isClient ? (
                 <div className="flex flex-col items-center gap-6 py-8">

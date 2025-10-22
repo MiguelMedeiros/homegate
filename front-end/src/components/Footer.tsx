@@ -4,7 +4,7 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-sm text-muted-foreground">
-            © 2025 Home Gate. Powered by{" "}
+            © 2025 Homegate. Powered by{" "}
             <a 
               href="https://pubky.tech" 
               className="text-brand hover:underline" 
