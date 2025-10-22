@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProfile } from "@/contexts/ProfileContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { pubkyService } from "@/lib/pubky";
 import {
   Dialog,
   DialogContent,
@@ -18,21 +19,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-// Mock public key (will be replaced with real one later)
-const MOCK_PUBLIC_KEY = "4snwyct86m383rsduhw5xgcxpw7c63j3pq8x4ycqikxgik8y64ro";
-
-// Mock seed phrase (will be generated later)
-const MOCK_SEED_PHRASE = [
-  "abandon", "ability", "able", "about", "above", "absent",
-  "absorb", "abstract", "absurd", "abuse", "access", "accident"
-];
+// These will be replaced with real data from the signup flow
 
 export default function FreeBackupPage() {
   const router = useRouter();
   const { profile } = useProfile();
   const { login } = useAuth();
-  const [publicKey] = useState(MOCK_PUBLIC_KEY);
+  const [publicKey, setPublicKey] = useState<string>("");
+  const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
+  const [keypair, setKeypair] = useState<any>(null);
+  const [session, setSession] = useState<any>(null);
   const [copied, setCopied] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
 
   // Pubky Ring Dialog
   const [pubkyRingOpen, setPubkyRingOpen] = useState(false);
@@ -48,12 +46,81 @@ export default function FreeBackupPage() {
   const [showSeedPhrase, setShowSeedPhrase] = useState(false);
   const [verificationWords, setVerificationWords] = useState<string[]>(Array(12).fill(""));
   const [verificationStep, setVerificationStep] = useState<"view" | "verify">("view");
-  const allWordsMatch = verificationWords.every((word, index) => word.toLowerCase() === MOCK_SEED_PHRASE[index]);
+  const allWordsMatch = verificationWords.every((word, index) => word.toLowerCase() === seedPhrase[index]);
 
-  // Redirect if no profile (after all hooks)
-  if (!profile) {
-    router.push("/signup/free/profile");
-    return null;
+  // Load Pubky data from localStorage (set by profile page) and hydrate ephemeral keypair/session from service
+  useEffect(() => {
+    try {
+      const storedData = localStorage.getItem("pubky_signup_data");
+      console.log("Loading Pubky data from localStorage:", storedData);
+      if (storedData) {
+        const data = JSON.parse(storedData);
+        console.log("Parsed Pubky data:", data);
+        setPublicKey(data.publicKey || "");
+        setSeedPhrase(data.seedPhrase || []);
+        // Hydrate ephemeral credentials from service cache (same-session only)
+        const kp = pubkyService.getLastKeypair?.() ?? null;
+        const sess = pubkyService.getLastSession?.() ?? null;
+        if (kp) setKeypair(kp);
+        if (sess) setSession(sess);
+      } else {
+        console.log("No Pubky data found in localStorage");
+      }
+    } catch (error) {
+      console.error("Error loading Pubky data:", error);
+    } finally {
+      setIsLoadingData(false);
+    }
+  }, []);
+
+  // Redirect if no profile or Pubky data (only after data loading is complete)
+  useEffect(() => {
+    if (isLoadingData) {
+      console.log("Still loading data, not checking redirect conditions yet");
+      return;
+    }
+    
+    console.log("Checking redirect conditions:", {
+      profile: !!profile,
+      publicKey: publicKey,
+      seedPhraseLength: seedPhrase.length,
+      isLoadingData
+    });
+    
+    if (!profile) {
+      console.log("No profile found, redirecting to profile page");
+      router.push("/signup/free/profile");
+      return;
+    }
+    
+    if (!publicKey || seedPhrase.length === 0) {
+      console.log("No Pubky data found, redirecting to profile page");
+      router.push("/signup/free/profile");
+      return;
+    }
+    
+    console.log("All data present, staying on backup page");
+  }, [profile, publicKey, seedPhrase, router, isLoadingData]);
+
+  // Show loading state while checking data
+  if (isLoadingData || !profile || !publicKey || seedPhrase.length === 0) {
+    return (
+      <div className="relative flex min-h-screen flex-col bg-background">
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-size-[4rem_4rem]" />
+        <div className="absolute inset-0 -z-10 bg-linear-to-br from-brand/5 via-transparent to-brand/10" />
+        
+        <Header />
+        <main className="container relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-16 mx-auto">
+          <div className="flex flex-col items-center gap-6">
+            <div className="h-16 w-16 animate-spin rounded-full border-4 border-brand/20 border-t-brand"></div>
+            <p className="text-muted-foreground">
+              {isLoadingData ? "Loading your data..." : "Redirecting..."}
+            </p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   const handleCopy = async () => {
@@ -63,11 +130,32 @@ export default function FreeBackupPage() {
   };
 
   const handleDownload = () => {
-    // TODO: Implement actual download logic
-    console.log("Downloading encrypted file...");
-    setDownloadOpen(false);
-    setPassword("");
-    setConfirmPassword("");
+    if (!keypair || !passwordsMatch) {
+      return;
+    }
+    
+    try {
+      // Create recovery file with password
+      const recoveryFile = pubkyService.createRecoveryFile(keypair, password);
+      
+      // Create blob and download
+      const blob = new Blob([recoveryFile as BlobPart], { type: 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `pubky-recovery-${publicKey.slice(0, 8)}.pubky`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      setDownloadOpen(false);
+      setPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.error("Error creating recovery file:", error);
+      alert("Failed to create recovery file. Please try again.");
+    }
   };
 
   const handleVerifySeedPhrase = () => {
@@ -364,7 +452,7 @@ export default function FreeBackupPage() {
                       ) : (
                         <>
                           <div className="grid grid-cols-2 gap-3 rounded-xl border-2 border-brand/20 bg-card/30 p-6 backdrop-blur-sm sm:grid-cols-3">
-                            {MOCK_SEED_PHRASE.map((word, index) => (
+                            {seedPhrase.map((word, index) => (
                               <div
                                 key={index}
                                 className="flex items-center gap-3 rounded-lg border border-border/50 bg-background px-4 py-3"
@@ -440,7 +528,9 @@ export default function FreeBackupPage() {
             <Button
               onClick={() => {
                 // Mark as authenticated with free plan
-                login("free", publicKey);
+                login("free", publicKey, seedPhrase, keypair, session);
+                // Clean up temporary data
+                localStorage.removeItem("pubky_signup_data");
                 // Navigate to dashboard
                 router.push("/dashboard");
               }}

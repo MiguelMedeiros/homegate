@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { Keypair, Session } from "@synonymdev/pubky";
 
 export type PlanType = "free" | "onetime" | "premium" | "pro";
 
@@ -9,11 +10,16 @@ interface AuthData {
   plan: PlanType | null;
   publicKey: string | null;
   signupCompletedAt: string | null;
+  seedPhrase: string[] | null;
+  keypair: Keypair | null;
+  session: Session | null;
 }
 
 interface AuthContextType {
   auth: AuthData;
-  login: (plan: PlanType, publicKey: string) => void;
+  login: (plan: PlanType, publicKey: string, seedPhrase?: string[], keypair?: Keypair, session?: Session) => void;
+  signin: (plan: PlanType, publicKey: string, keypair: Keypair, session: Session) => void;
+  signinWithSession: (plan: PlanType, publicKey: string, session: Session) => void;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -27,6 +33,9 @@ const defaultAuthData: AuthData = {
   plan: null,
   publicKey: null,
   signupCompletedAt: null,
+  seedPhrase: null,
+  keypair: null,
+  session: null,
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -47,18 +56,88 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = (plan: PlanType, publicKey: string) => {
+  const login = (plan: PlanType, publicKey: string, seedPhrase?: string[], keypair?: Keypair, session?: Session) => {
     const authData: AuthData = {
       isAuthenticated: true,
       plan,
       publicKey,
       signupCompletedAt: new Date().toISOString(),
+      seedPhrase: seedPhrase || null,
+      keypair: keypair || null,
+      session: session || null,
     };
     
     setAuthState(authData);
     
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(authData));
+      // Note: We can't serialize Keypair and Session objects to JSON
+      // Store only the serializable data
+      const serializableData = {
+        isAuthenticated: authData.isAuthenticated,
+        plan: authData.plan,
+        publicKey: authData.publicKey,
+        signupCompletedAt: authData.signupCompletedAt,
+        seedPhrase: authData.seedPhrase,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(serializableData));
+    } catch (error) {
+      console.error("Error saving auth to localStorage:", error);
+    }
+  };
+
+  const signin = (plan: PlanType, publicKey: string, keypair: Keypair, session: Session) => {
+    const authData: AuthData = {
+      isAuthenticated: true,
+      plan,
+      publicKey,
+      signupCompletedAt: null, // For signin, we don't know when they originally signed up
+      seedPhrase: null, // For signin, we don't have the seed phrase
+      keypair,
+      session,
+    };
+    
+    setAuthState(authData);
+    
+    try {
+      // Note: We can't serialize Keypair and Session objects to JSON
+      // Store only the serializable data
+      const serializableData = {
+        isAuthenticated: authData.isAuthenticated,
+        plan: authData.plan,
+        publicKey: authData.publicKey,
+        signupCompletedAt: authData.signupCompletedAt,
+        seedPhrase: authData.seedPhrase,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(serializableData));
+    } catch (error) {
+      console.error("Error saving auth to localStorage:", error);
+    }
+  };
+
+  const signinWithSession = (plan: PlanType, publicKey: string, session: Session) => {
+    const authData: AuthData = {
+      isAuthenticated: true,
+      plan,
+      publicKey,
+      signupCompletedAt: null, // For QR auth, we don't know when they originally signed up
+      seedPhrase: null, // For QR auth, we don't have the seed phrase
+      keypair: null, // For QR auth, we don't have access to the private key
+      session,
+    };
+    
+    setAuthState(authData);
+    
+    try {
+      // Note: We can't serialize Session objects to JSON
+      // Store only the serializable data
+      const serializableData = {
+        isAuthenticated: authData.isAuthenticated,
+        plan: authData.plan,
+        publicKey: authData.publicKey,
+        signupCompletedAt: authData.signupCompletedAt,
+        seedPhrase: authData.seedPhrase,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(serializableData));
     } catch (error) {
       console.error("Error saving auth to localStorage:", error);
     }
@@ -82,7 +161,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout, isAuthenticated: auth.isAuthenticated }}>
+    <AuthContext.Provider value={{ auth, login, signin, signinWithSession, logout, isAuthenticated: auth.isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

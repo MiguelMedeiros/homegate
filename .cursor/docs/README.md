@@ -30,6 +30,10 @@ This directory contains all project planning, architecture, and development docu
 - **[DOCKER_QUICK_REFERENCE.md](./DOCKER_QUICK_REFERENCE.md)**  
   Quick command reference for Docker Compose operations and common tasks.
 
+### Pubky SDK
+
+- **[PUBKY_DOCS.md](./PUBKY_DOCS.md)**  Documentation about @synonymdev/pubky
+
 ## 🎯 Purpose
 
 These documents are kept in `.cursor/docs` to:

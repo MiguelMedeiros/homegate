@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProfile } from "@/contexts/ProfileContext";
+import { pubkyService, CreateUserResult, PubkyErrorInfo } from "@/lib/pubky";
 
 // Zod validation schema
 const profileSchema = z.object({
@@ -25,6 +26,8 @@ export default function ProfilePage() {
   const { setProfile } = useProfile();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pubkyResult, setPubkyResult] = useState<CreateUserResult | null>(null);
+  const [error, setError] = useState<PubkyErrorInfo | null>(null);
 
   const {
     register,
@@ -70,22 +73,54 @@ export default function ProfilePage() {
 
   const onSubmit = async (data: ProfileForm) => {
     setIsSubmitting(true);
+    setError(null);
     
-    // Save profile to context
-    setProfile({
-      name: data.name,
-      avatar: avatarPreview,
-    });
-    
-    // TODO: Save profile data to backend (name and avatar)
-    console.log("Profile data:", data);
-    console.log("Avatar preview:", avatarPreview);
-    
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    
-    // Navigate to backup page
-    router.push("/signup/free/backup");
+    try {
+      // Create user with Pubky SDK
+      const result = await pubkyService.createUser({
+        name: data.name,
+        avatar: avatarPreview,
+      });
+      
+      // Store the result
+      setPubkyResult(result);
+      
+      // Save profile to context
+      setProfile({
+        name: data.name,
+        avatar: avatarPreview,
+      });
+      
+      // Store Pubky data in localStorage for backup page
+      try {
+        localStorage.setItem("pubky_signup_data", JSON.stringify({
+          publicKey: result.publicKey,
+          seedPhrase: result.seedPhrase,
+          // Note: keypair and session can't be serialized
+        }));
+      } catch (error) {
+        console.error("Error storing Pubky data:", error);
+      }
+      
+      // Navigate to backup page with the generated data
+      router.push("/signup/free/backup");
+    } catch (err) {
+      console.error("Pubky user creation failed:", err);
+      console.error("Error type:", typeof err);
+      console.error("Error details:", err);
+      setError(err as PubkyErrorInfo);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleRetry = () => {
+    setError(null);
+    // Re-trigger form submission
+    const form = document.querySelector('form');
+    if (form) {
+      form.requestSubmit();
+    }
   };
 
   return (
@@ -196,6 +231,33 @@ export default function ProfilePage() {
                 This is your display name on Pubky
               </p>
             </div>
+
+            {/* Error Display */}
+            {error && (
+              <div className="rounded-xl border-2 border-red-500/20 bg-red-500/5 p-4 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/20">
+                    <svg className="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-medium text-red-500">Error</h3>
+                    <p className="mt-1 text-sm text-red-400">{error.message}</p>
+                    {error.retryable && (
+                      <Button
+                        onClick={handleRetry}
+                        variant="outline"
+                        size="sm"
+                        className="mt-3 border-red-500/20 text-red-500 hover:border-red-500/50 hover:bg-red-500/5"
+                      >
+                        Try Again
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Submit Button */}
             <Button
