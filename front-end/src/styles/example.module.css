@@ -1,0 +1,27 @@
+/* Example CSS Module
+ * This file demonstrates how to use CSS Modules alongside Tailwind CSS
+ * Import this in your component with:
+ * import styles from "@/styles/example.module.css";
+ */
+
+.container {
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+/* You can combine CSS Modules with Tailwind's @apply directive */
+.button {
+  @apply rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:bg-primary/90;
+}
+
