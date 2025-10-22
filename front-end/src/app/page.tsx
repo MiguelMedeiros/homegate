@@ -1,6 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -9,33 +10,7 @@ export default function Home() {
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-brand/5 via-transparent to-brand/10" />
       
-      {/* Header */}
-      <header className="border-b border-border/50 backdrop-blur-sm">
-        <nav className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-            <Image 
-              src="/pubky-logo.svg" 
-              alt="Pubky Logo" 
-              width={109} 
-              height={36}
-              className="h-8 w-auto"
-              priority
-            />
-          </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/about">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                About
-              </Button>
-            </Link>
-            <Link href="/docs">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                Docs
-              </Button>
-            </Link>
-          </div>
-        </nav>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <main className="container relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-16 m-auto">
@@ -145,24 +120,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p className="text-sm text-muted-foreground">
-              © 2025 Home Gate. Powered by{" "}
-              <a href="https://pubky.tech" className="text-brand hover:underline" target="_blank" rel="noopener noreferrer">
-                Pubky Stack
-              </a>
-            </p>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-              <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-              <a href="#" className="hover:text-foreground transition-colors">Support</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
