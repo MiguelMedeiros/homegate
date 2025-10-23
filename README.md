@@ -1,6 +1,28 @@
-# Home Gate - Monorepo
+# Homegate
 
-A monorepo for the Home Gate project - your gateway to sign up and join the Pubky homeserver network.
+> This is a two day hackathon project. DO NOT USE IN PRODUCTION.
+
+A monorepo for the Homegate project - your gateway to sign up and join the Pubky homeserver network.
+
+Live demo for the Staging homeserver: [homegate.live](https://homegate.live/)
+
+**Features**
+- Three-tier signup system: Free (math captcha), Basic (50k sats), Pro (200k sats)
+- Bot protection with math captcha verification and SMS verification via Prelude
+- Lightning Network payments for Basic and Pro plans
+- Real-time payment notifications via WebSocket
+- Invite code generation system for homeserver access
+- Simple user profile creation with a name and image
+- Sign in with an existing user
+- User dashboard showing the user's plan
+
+
+**External Dependencies**
+
+- [Cloudflare Turnstile](https://www.cloudflare.com/en-gb/application-services/products/turnstile/) Invisible captcha bot protection
+- [Prelude](https://prelude.so/) SMS Verification made easy
+- [phoenixd](https://github.com/ACINQ/phoenixd) Receive Bitcoin Lightning payments
+
 
 ## 🚀 Quick Start
 
@@ -13,6 +35,8 @@ make up               # Background mode
 # Access: http://localhost:3000
 ```
 
+Add the `PRELUDE_API_TOKEN` to `front-end/.env.local` for SMS verification.
+
 That's it! Both the frontend and phoenixd will be running.
 
 > 📚 **New to the project?** Check out [GETTING_STARTED.md](./GETTING_STARTED.md) for a complete walkthrough!
@@ -21,29 +45,38 @@ That's it! Both the frontend and phoenixd will be running.
 
 ```
 home-gate/
-├── .cursor/
-│   └── docs/          # Project planning & development docs
-├── front-end/         # Next.js 15 web application
-│   ├── src/          # Application source code
-│   ├── public/       # Static assets
-│   └── README.md     # Frontend documentation
+├── front-end/         # Next.js 16 web application
+│   ├── src/
+│   │   ├── app/       # Next.js App Router pages and API routes
+│   │   ├── components/ # React components and UI elements
+│   │   ├── contexts/  # React context providers
+│   │   ├── hooks/     # Custom React hooks
+│   │   └── lib/       # Utility functions and configurations
+│   ├── public/        # Static assets
+│   └── README.md      # Frontend documentation
 ├── back-end/          # Express.js API server
-│   ├── src/          # Backend source code
-│   └── README.md     # Backend documentation
+│   ├── src/
+│   │   ├── controllers/ # Request handlers
+│   │   ├── routes/     # API route definitions
+│   │   └── services/   # Business logic and WebSocket service
+│   └── README.md      # Backend documentation
 └── phoenixd/          # Phoenix Lightning node data (git-ignored)
 ```
 
 ## Packages
 
 ### 🎨 Front-end
-Next.js 15 web application with shadcn/ui for the homeserver signup gateway.
+Next.js 16 web application with shadcn/ui for the homeserver signup gateway.
 
 **Tech Stack:**
 - Next.js 16.0.0 with App Router
 - React 19.2.0
 - TypeScript 5 (strict mode)
 - Tailwind CSS v4
-- shadcn/ui components
+- shadcn/ui components (button, dialog)
+- @prelude.so/sdk for SMS verification
+- @synonymdev/pubky for Pubky integration
+- Custom server.js for enhanced functionality
 
 **Get Started:**
 ```bash
@@ -55,13 +88,20 @@ npm run dev
 See [front-end/README.md](./front-end/README.md) for detailed documentation.
 
 ### ⚙️ Back-end
-Express.js REST API server for handling Lightning invoices and payments.
+Express.js REST API server with WebSocket support for handling Lightning invoices and payments.
 
 **Tech Stack:**
 - Express.js 4
 - TypeScript 5
+- WebSocket support (ws package)
 - Phoenix daemon integration
 - CORS enabled
+
+**API Endpoints:**
+- `/health` - Health check with WebSocket status
+- `/api/invoice` - Lightning invoice management
+- `/api/webhook` - Webhook handling
+- `/ws` - WebSocket connection for real-time updates
 
 **Get Started:**
 ```bash
@@ -145,10 +185,10 @@ The project includes Docker Compose configuration with the following services:
 
 ### ⚙️ Backend Service
 - **Port**: 4000
-- **Container**: Express.js API server
-- **Features**: Hot reload with ts-node-dev, REST API endpoints
+- **Container**: Express.js API server with WebSocket support
+- **Features**: Hot reload with ts-node-dev, REST API endpoints, WebSocket connections
 - **Image**: Custom build from `back-end/Dockerfile`
-- **Endpoints**: `/api/invoice`, `/health`
+- **Endpoints**: `/api/invoice`, `/api/webhook`, `/health`, `/ws`
 
 ### ⚡ phoenixd Service
 - **Port**: 9740
@@ -176,27 +216,4 @@ The project includes Docker Compose configuration with the following services:
 | `make help` | Show all available commands |
 
 > 💡 **Tip**: Use `make dev` for active development to see logs in real-time.
-
-## Documentation
-
-### Getting Started
-- [Getting Started Guide](./GETTING_STARTED.md) - Complete walkthrough for new developers
-- [Docker Guide](./DOCKER.md) - Docker Compose setup and commands
-- [Frontend Documentation](./front-end/README.md) - Frontend package details
-
-### Project Planning & Architecture
-- [Project Summary](./.cursor/docs/PROJECT_SUMMARY.md) - Complete project overview
-- [Monorepo Structure](./.cursor/docs/MONOREPO_STRUCTURE.md) - Monorepo organization guide
-- [Development Guide](./.cursor/docs/DEVELOPMENT.md) - Development practices & tips
-- [Quick Start](./.cursor/docs/QUICKSTART.md) - Get started quickly
-
-> 📁 All planning and architecture docs are in [`.cursor/docs/`](./.cursor/docs/)
-
-## Contributing
-
-[Add contributing guidelines here]
-
-## License
-
-[Add license here]
 
