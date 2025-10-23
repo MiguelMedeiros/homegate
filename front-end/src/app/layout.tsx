@@ -12,6 +12,11 @@ const interTight = Inter_Tight({
 export const metadata: Metadata = {
   title: "Home Gate - Homeserver Signup Gateway",
   description: "Your gateway to sign up and join the Pubky homeserver network",
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
