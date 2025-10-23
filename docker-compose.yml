@@ -16,7 +16,7 @@ services:
       context: ./back-end
       dockerfile: Dockerfile
     ports:
-      - "4000:4000"
+      - "8881:8881"
     depends_on:
       - phoenixd
     volumes:
@@ -33,7 +33,7 @@ services:
       context: ./front-end
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "8882:8882"
     depends_on:
       - backend
       - phoenixd
@@ -44,5 +44,7 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_BACKEND_URL=http://localhost:4000
+      - PORT=8882
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:8881
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8881/ws
 

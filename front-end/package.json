@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next dev -p 8882",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start -p 8882",
     "lint": "eslint"
   },
   "dependencies": {

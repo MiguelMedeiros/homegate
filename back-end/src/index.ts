@@ -10,7 +10,7 @@ import { wsService } from './services/websocket';
 dotenv.config();
 
 const app: Application = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8881;
 
 // Middleware
 app.use(cors());

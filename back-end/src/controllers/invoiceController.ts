@@ -25,7 +25,7 @@ export async function createInvoice(req: Request, res: Response): Promise<void> 
       description = 'Homeserver Signup - Basic Plan',
       externalId,
       expirySeconds = 3600, // 1 hour default
-      webhookUrl = 'http://backend:4000/api/webhook',
+      webhookUrl = 'http://backend:8881/api/webhook',
     }: CreateInvoiceBody = req.body;
 
 

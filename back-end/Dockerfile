@@ -13,7 +13,7 @@ RUN npm install
 COPY src ./src
 
 # Expose port
-EXPOSE 4000
+EXPOSE 8881
 
 # For development, use ts-node-dev
 # For production, build and run
