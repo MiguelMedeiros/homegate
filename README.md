@@ -1,6 +1,25 @@
-# Home Gate - Monorepo
+# Homegate
 
-A monorepo for the Home Gate project - your gateway to sign up and join the Pubky homeserver network.
+> ⚠️ This is a two day hackathon project. DO NOT USE IN PRODUCTION.
+
+A monorepo for the Homegate project - your gateway to sign up and join the Pubky homeserver network.
+
+Live demo for the Staging homeserver: [homegate.live](https://homegate.live/)
+
+**Features**
+- Signup to the homeserver as a new user.
+- Bot protection with invisible Cloudflare Turnstile captchas, SMS verification, and Lightning payments.
+- Simple user profile creation with a name and image.
+- Sign in with an existing user.
+- User dashboard showing the users plan.
+
+
+**External Dependencies**
+
+- [Cloudflare Turnstile](https://www.cloudflare.com/en-gb/application-services/products/turnstile/) Invisible captcha bot protection.
+- [Prelude](https://prelude.so/) SMS Verification made easy
+- [phoenixd](https://github.com/ACINQ/phoenixd) Receive Bitcoin Lightning payments easily
+
 
 ## 🚀 Quick Start
 
@@ -12,6 +31,8 @@ make up               # Background mode
 
 # Access: http://localhost:3000
 ```
+
+Add the `PRELUDE_API_TOKEN` to `front-end/.env.local`.
 
 That's it! Both the frontend and phoenixd will be running.
 
@@ -176,27 +197,4 @@ The project includes Docker Compose configuration with the following services:
 | `make help` | Show all available commands |
 
 > 💡 **Tip**: Use `make dev` for active development to see logs in real-time.
-
-## Documentation
-
-### Getting Started
-- [Getting Started Guide](./GETTING_STARTED.md) - Complete walkthrough for new developers
-- [Docker Guide](./DOCKER.md) - Docker Compose setup and commands
-- [Frontend Documentation](./front-end/README.md) - Frontend package details
-
-### Project Planning & Architecture
-- [Project Summary](./.cursor/docs/PROJECT_SUMMARY.md) - Complete project overview
-- [Monorepo Structure](./.cursor/docs/MONOREPO_STRUCTURE.md) - Monorepo organization guide
-- [Development Guide](./.cursor/docs/DEVELOPMENT.md) - Development practices & tips
-- [Quick Start](./.cursor/docs/QUICKSTART.md) - Get started quickly
-
-> 📁 All planning and architecture docs are in [`.cursor/docs/`](./.cursor/docs/)
-
-## Contributing
-
-[Add contributing guidelines here]
-
-## License
-
-[Add license here]
 
