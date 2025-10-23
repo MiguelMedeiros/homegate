@@ -147,7 +147,7 @@ export default function BasicPaymentPage() {
               {/* Payment Amount */}
               <div className="mb-8">
                 <p className="text-sm text-foreground/70 mb-2">Amount to pay</p>
-                <p className="text-4xl font-bold text-white">50,000 sats</p>
+                <p className="text-4xl font-bold text-white">₿ 100</p>
               </div>
 
               {/* QR Code Area with Animation */}
@@ -239,91 +239,8 @@ export default function BasicPaymentPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Waiting for payment indicator */}
-              {!showSuccess && !isLoading && !error && (
-                <div className="space-y-2">
-                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground animate-pulse">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75"></span>
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-brand"></span>
-                    </span>
-                    <span>Waiting for payment...</span>
-                  </div>
-                  {/* WebSocket Status */}
-                  <div className="flex items-center justify-center gap-2 text-xs">
-                    <span className={`flex h-1.5 w-1.5 rounded-full ${isConnected ? 'bg-green-500' : 'bg-yellow-500'}`}></span>
-                    <span className="text-muted-foreground/70">
-                      {isConnected ? 'Connected' : 'Connecting...'}
-                    </span>
-                  </div>
-                  {wsError && (
-                    <p className="text-xs text-red-500 text-center">{wsError}</p>
-                  )}
-                </div>
-              )}
             </div>
           </div>
-
-          {/* Payment Info or Continue Button */}
-          {!showSuccess ? (
-            <div className="w-full max-w-md rounded-xl border border-border/40 bg-card/30 p-6 backdrop-blur-sm">
-              <h3 className="mb-4 text-lg font-semibold">Payment Instructions</h3>
-              <ol className="space-y-3 text-left text-sm text-muted-foreground">
-                <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-semibold text-brand">
-                    1
-                  </span>
-                  <span>Open your Lightning wallet app</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-semibold text-brand">
-                    2
-                  </span>
-                  <span>Scan the QR code or copy the invoice</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-semibold text-brand">
-                    3
-                  </span>
-                  <span>Confirm the payment in your wallet</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-semibold text-brand">
-                    4
-                  </span>
-                  <span>Wait for confirmation (usually instant!)</span>
-                </li>
-              </ol>
-            </div>
-          ) : (
-            <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "800ms" }}>
-              <Button
-                onClick={handleContinue}
-                size="lg"
-                className="w-full bg-brand text-background text-xl hover:bg-brand/90 cursor-pointer"
-              >
-                Continue to Profile
-                <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Button>
-            </div>
-          )}
-
-          {/* Test Button (Development Only) */}
-          {process.env.NODE_ENV === 'development' && !showSuccess && (
-            <div className="mt-8">
-              <Button
-                onClick={handlePaymentSuccess}
-                variant="outline"
-                size="sm"
-                className="border-yellow-500/20 text-yellow-500 hover:border-yellow-500/50 hover:bg-yellow-500/5"
-              >
-                🧪 Test: Simulate Payment
-              </Button>
-            </div>
-          )}
         </div>
       </main>
 
