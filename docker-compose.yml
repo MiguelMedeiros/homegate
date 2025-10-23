@@ -45,6 +45,6 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=8882
-      - NEXT_PUBLIC_BACKEND_URL=https://homegate-api.miguelmedeiros.dev
-      - NEXT_PUBLIC_WS_URL=wss://homegate-api.miguelmedeiros.dev/ws
+      - NEXT_PUBLIC_BACKEND_URL=https://api.homegate.live
+      - NEXT_PUBLIC_WS_URL=wss://api.homegate.live/ws
 
