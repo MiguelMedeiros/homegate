@@ -8,17 +8,19 @@ import { OTPInput } from "@/components/ui/otp";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
-export default function SmsVerifyPage() {
+export default function SMSVerificationPage() {
   const router = useRouter();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
-  const [codeSent, setCodeSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [verificationId, setVerificationId] = useState("");
+  const [step, setStep] = useState<"phone" | "code">("code");
 
-  const handleSendCode = async () => {
+  const handleSendSMS = async () => {
     if (!phoneNumber.trim()) {
-      setError("Please enter a phone number");
+      setError("Please enter a valid phone number");
       return;
     }
 
@@ -26,21 +28,37 @@ export default function SmsVerifyPage() {
     setError("");
 
     try {
-      // TODO: Implement actual SMS sending via API
-      // await fetch('/api/sms/send', { method: 'POST', body: JSON.stringify({ phone: phoneNumber }) });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setCodeSent(true);
-    } catch {
-      setError("Failed to send verification code. Please try again.");
+      const response = await fetch("/api/sms/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumber }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setVerificationId(data.verificationId);
+        setStep("code");
+        setSuccess(true);
+      } else {
+        setError(data.error || "Failed to send SMS. Please try again.");
+      }
+    } catch (err) {
+      console.error("SMS verification error:", err);
+      setError("Failed to send SMS. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleVerifyCode = async () => {
+    if (!verificationId) {
+      setError("Verification session expired. Please try again.");
+      return;
+    }
+
     if (!verificationCode.trim()) {
       setError("Please enter the verification code");
       return;
@@ -50,39 +68,62 @@ export default function SmsVerifyPage() {
     setError("");
 
     try {
-      // TODO: Implement actual code verification via API
-      // await fetch('/api/sms/verify', { method: 'POST', body: JSON.stringify({ phone: phoneNumber, code: verificationCode }) });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Store verification in localStorage
-      localStorage.setItem("sms_verified", "true");
-      localStorage.setItem("verified_phone", phoneNumber);
-      
-      // Redirect to profile page
-      router.push("/signup/profile");
-    } catch {
-      setError("Invalid verification code. Please try again.");
+      const response = await fetch("/api/sms/confirm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          verificationId, 
+          code: verificationCode,
+          phoneNumber: phoneNumber
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.verified) {
+        // Store verification status in localStorage
+        localStorage.setItem("sms_verified", "true");
+        localStorage.setItem("verified_phone", phoneNumber);
+        
+        // Redirect to profile creation
+        router.push("/signup/free/profile");
+      } else {
+        setError(data.error || "Invalid verification code. Please try again.");
+      }
+    } catch (err) {
+      console.error("Code verification error:", err);
+      setError("Failed to verify code. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSkipVerification = () => {
-    // Skip SMS verification for development
-    localStorage.setItem("sms_verified", "true");
-    localStorage.setItem("verified_phone", "dev-skip");
+  const handleResendCode = async () => {
+    setStep("phone");
+    setVerificationCode("");
+    setError("");
+    setSuccess(false);
+  };
+
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-numeric characters
+    const cleaned = value.replace(/\D/g, "");
     
-    // Redirect to profile page
-    router.push("/signup/profile");
+    // Format as international number if it doesn't start with +
+    if (cleaned.length > 0 && !value.startsWith("+")) {
+      return `+${cleaned}`;
+    }
+    
+    return value;
   };
 
   return (
     <div className="relative flex min-h-screen flex-col bg-background">
       {/* Background */}
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-size-[4rem_4rem]" />
-      <div className="absolute inset-0 -z-10 bg-linear-to-br from-brand/5 via-transparent to-brand/10" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-brand/5 via-transparent to-brand/10" />
       
       <Header 
         rightContent={
@@ -186,23 +227,19 @@ export default function SmsVerifyPage() {
                     </Button>
                   </div>
                 </div>
+              )}
 
-                {/* Error Message */}
-                {error && (
-                  <div className="rounded-xl border-2 border-red-500/20 bg-red-500/5 p-4 backdrop-blur-sm">
-                    <div className="flex items-start gap-3">
-                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/20">
-                        <svg className="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-sm font-medium text-red-500">Error</h3>
-                        <p className="mt-1 text-sm text-red-400">{error}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+              {/* Error Message */}
+              {error && (
+                <div className="mt-4 flex items-center gap-2 text-red-500 animate-in fade-in">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-sm">{error}</span>
+                </div>
+              )}
+            </div>
+          </div>
 
         </div>
       </main>
