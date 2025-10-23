@@ -11,11 +11,11 @@ export function Header({ rightContent }: HeaderProps) {
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
           <Image 
-            src="/pubky-logo.svg" 
-            alt="Pubky Logo" 
-            width={109} 
-            height={36}
-            className="h-8 w-auto"
+            src="/homegate_with.svg" 
+            alt="Homegate Logo" 
+            width={250} 
+            height={75}
+            className="h-10 w-auto"
             priority
           />
         </Link>

@@ -17,7 +17,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # Environment variables
-.env*
+.env
 
 # IDE
 .DS_Store

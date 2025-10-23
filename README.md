@@ -32,19 +32,17 @@ make dev              # Development mode with logs
 # or
 make up               # Background mode
 
-# Access: http://localhost:3000
+# Access: http://localhost:8882 (frontend)
 ```
 
 Add the `PRELUDE_API_TOKEN` to `front-end/.env.local` for SMS verification.
 
-That's it! Both the frontend and phoenixd will be running.
-
-> 📚 **New to the project?** Check out [GETTING_STARTED.md](./GETTING_STARTED.md) for a complete walkthrough!
+That's it! The frontend and backend and phoenixd will be running.
 
 ## Project Structure
 
 ```
-home-gate/
+homegate/
 ├── front-end/         # Next.js 16 web application
 │   ├── src/
 │   │   ├── app/       # Next.js App Router pages and API routes
@@ -52,14 +50,13 @@ home-gate/
 │   │   ├── contexts/  # React context providers
 │   │   ├── hooks/     # Custom React hooks
 │   │   └── lib/       # Utility functions and configurations
-│   ├── public/        # Static assets
-│   └── README.md      # Frontend documentation
+│   └── public/        # Static assets
 ├── back-end/          # Express.js API server
 │   ├── src/
 │   │   ├── controllers/ # Request handlers
 │   │   ├── routes/     # API route definitions
 │   │   └── services/   # Business logic and WebSocket service
-│   └── README.md      # Backend documentation
+│   └── dist/          # Compiled TypeScript output
 └── phoenixd/          # Phoenix Lightning node data (git-ignored)
 ```
 
@@ -76,7 +73,8 @@ Next.js 16 web application with shadcn/ui for the homeserver signup gateway.
 - shadcn/ui components (button, dialog)
 - @prelude.so/sdk for SMS verification
 - @synonymdev/pubky for Pubky integration
-- Custom server.js for enhanced functionality
+- React Hook Form with Zod validation
+- Lucide React icons
 
 **Get Started:**
 ```bash
@@ -85,17 +83,18 @@ npm install
 npm run dev
 ```
 
-See [front-end/README.md](./front-end/README.md) for detailed documentation.
+See the front-end directory for detailed documentation.
 
 ### ⚙️ Back-end
 Express.js REST API server with WebSocket support for handling Lightning invoices and payments.
 
 **Tech Stack:**
-- Express.js 4
-- TypeScript 5
+- Express.js 4.21.2
+- TypeScript 5.7.2
 - WebSocket support (ws package)
 - Phoenix daemon integration
 - CORS enabled
+- ts-node-dev for development
 
 **API Endpoints:**
 - `/health` - Health check with WebSocket status
@@ -110,7 +109,7 @@ npm install
 npm run dev
 ```
 
-See [back-end/README.md](./back-end/README.md) for detailed documentation.
+See the back-end directory for detailed documentation.
 
 ## Development
 
@@ -134,8 +133,8 @@ docker compose up -d  # Start in background
 ```
 
 **Access the application:**
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:4000
+- Frontend: http://localhost:8882
+- Backend API: http://localhost:8881
 - phoenixd API: http://localhost:9740
 
 **Other useful commands:**
@@ -146,14 +145,14 @@ make restart   # Restart services
 make help      # See all available commands
 ```
 
-See [DOCKER.md](./DOCKER.md) for complete Docker documentation.
+See the docker-compose.yml file for complete Docker configuration.
 
 ### Option 2: Local Development
 
 1. **Clone the repository**
 ```bash
 git clone <repository-url>
-cd home-gate
+cd homegate
 ```
 
 2. **Set up the frontend**
@@ -164,7 +163,7 @@ npm run dev
 ```
 
 3. **Open your browser**
-- Frontend: http://localhost:3000
+- Frontend: http://localhost:8882
 
 ## Monorepo Structure
 
@@ -178,13 +177,13 @@ This is set up as a monorepo to accommodate multiple packages:
 The project includes Docker Compose configuration with the following services:
 
 ### 🌐 Frontend Service
-- **Port**: 3000
-- **Container**: Next.js 15 application
+- **Port**: 8882
+- **Container**: Next.js 16 application
 - **Features**: Hot reload, volume mounting for live development
 - **Image**: Custom build from `front-end/Dockerfile`
 
 ### ⚙️ Backend Service
-- **Port**: 4000
+- **Port**: 8881
 - **Container**: Express.js API server with WebSocket support
 - **Features**: Hot reload with ts-node-dev, REST API endpoints, WebSocket connections
 - **Image**: Custom build from `back-end/Dockerfile`
@@ -213,6 +212,8 @@ The project includes Docker Compose configuration with the following services:
 | `make clean` | Stop and remove everything |
 | `make shell` | Open shell in frontend container |
 | `make shell-be` | Open shell in backend container |
+| `make install` | Install npm packages in frontend |
+| `make npm-run` | Run npm commands in frontend |
 | `make help` | Show all available commands |
 
 > 💡 **Tip**: Use `make dev` for active development to see logs in real-time.
