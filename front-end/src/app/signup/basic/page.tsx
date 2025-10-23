@@ -242,6 +242,21 @@ export default function BasicPaymentPage() {
             </div>
           </div>
         </div>
+        {/* Payment Info or Continue Button */}
+        {!showSuccess ? (
+          <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "800ms" }}>
+          <Button
+            onClick={handleContinue}
+            size="lg"
+            className="w-full bg-brand text-background text-xl hover:bg-brand/90 cursor-pointer"
+          >
+            Continue to Profile
+            <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </Button>
+        </div>
+        ) : null}
       </main>
 
       <Footer />
