@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/ActionButton";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
@@ -43,39 +43,26 @@ export default function Home() {
           <div className="flex w-full max-w-2xl flex-col gap-6 sm:flex-row sm:gap-6">
             {/* Sign Up Button (Primary CTA) */}
             <Link href="/signup" className="group flex-1">
-              <div className="relative overflow-hidden rounded-2xl">
-                <div className="absolute inset-0 bg-gradient-to-r from-brand/20 via-brand/10 to-brand/20 opacity-0 transition-opacity group-hover:opacity-100" />
-                <Button
-                  size="lg"
-                  className="h-24 w-full rounded-2xl bg-brand text-2xl font-semibold text-background shadow-lg shadow-brand/20 transition-all hover:scale-[1.02] hover:bg-brand/90 hover:shadow-xl hover:shadow-brand/30 sm:h-28 sm:text-3xl"
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    <span>Get Started</span>
-                    <span className="text-sm font-normal text-background/70 sm:text-base">
-                      Join the revolution
-                    </span>
-                  </div>
-                </Button>
-              </div>
+              <ActionButton variant="primary">
+                <div className="flex flex-col items-center gap-2">
+                  <span>Get Started</span>
+                  <span className="text-sm font-normal text-background/70 sm:text-base">
+                    Join the revolution
+                  </span>
+                </div>
+              </ActionButton>
             </Link>
 
             {/* Sign In Button (Secondary CTA) */}
             <Link href="/signin" className="group flex-1">
-              <div className="relative overflow-hidden rounded-2xl">
-                <div className="absolute inset-0 bg-gradient-to-r from-brand/10 via-brand/5 to-brand/10 opacity-0 transition-opacity group-hover:opacity-100" />
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="h-24 w-full rounded-2xl border-2 border-border/50 bg-card/50 text-2xl font-semibold backdrop-blur-sm transition-all hover:scale-[1.02] hover:border-brand/50 hover:bg-brand/5 sm:h-28 sm:text-3xl cursor-pointer"
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    <span>Welcome Back</span>
-                    <span className="text-sm font-normal text-muted-foreground sm:text-base">
-                      Access your homeserver
-                    </span>
-                  </div>
-                </Button>
-              </div>
+              <ActionButton variant="secondary">
+                <div className="flex flex-col items-center gap-2">
+                  <span>Welcome Back</span>
+                  <span className="text-sm font-normal text-muted-foreground sm:text-base">
+                    Access your homeserver
+                  </span>
+                </div>
+              </ActionButton>
             </Link>
           </div>
         </div>

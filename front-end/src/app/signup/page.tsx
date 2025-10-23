@@ -5,14 +5,14 @@ import { Footer } from "@/components/Footer";
 
 const plans = [
   {
-    id: "free",
+    id: "free/verify",
     name: "Free",
     price: "Free",
     description: "Get started for free",
     features: [
-      "20MB Storage",
-      "5MB Max Filesize", 
-      "1MB/s Speed Limit",
+      "500MB Storage",
+      "20MB Max Filesize", 
+      "5MB/s Speed Limit",
     ],
     highlighted: false,
     cta: "Get Started Free",
@@ -20,7 +20,7 @@ const plans = [
   {
     id: "basic",
     name: "Basic",
-    price: "50,000 sats",
+    price: "₿ 100",
     description: "Most popular choice",
     features: [
       "500MB Storage",
@@ -35,7 +35,7 @@ const plans = [
   {
     id: "pro",
     name: "Pro",
-    price: "200,000 sats",
+    price: "₿ 1000",
     description: "For power users & creators",
     features: [
       "5GB Storage",
@@ -44,7 +44,7 @@ const plans = [
       "Priority indexing for content discovery",
     ],
     highlighted: false,
-    cta: "Go Pro",
+    cta: "Coming Soon",
   },
 ];
 
@@ -86,14 +86,14 @@ export default function SignUpPage() {
           </div>
 
           {/* Enhanced Pricing Cards */}
-          <div className="grid w-full gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid w-full gap-8 sm:grid-cols-2 lg:grid-cols-3 group">
             {plans.map((plan) => (
               <div
                 key={plan.id}
                 className={`group relative flex flex-col overflow-hidden rounded-3xl border-2 backdrop-blur-sm transition-all duration-300 ${
                   plan.highlighted
-                    ? "border-brand/60 bg-brand/5 p-12 scale-110"
-                    : "border-border/50 bg-card/40 hover:border-brand/40 hover:bg-card/50 p-6 scale-95"
+                    ? "border-brand/60 bg-brand/5 p-12 scale-110 group-hover:border-border/30 hover:border-brand/60"
+                    : "border-border/30 bg-card/40 hover:border-brand/40 hover:bg-card/50 p-6 scale-95"
                 }`}
               >
                 {/* Popular Badge */}
@@ -139,19 +139,30 @@ export default function SignUpPage() {
                 </ul>
 
                 {/* CTA Button */}
-                <Link href={`/signup/${plan.id}`} className="w-full">
+                {plan.id === "pro" ? (
                   <Button
-                    className={`w-full cursor-pointer transition-all duration-200 ${
-                      plan.highlighted
-                        ? "bg-brand text-background hover:bg-brand/90"
-                        : "border-brand/30 bg-transparent hover:bg-brand/10 hover:border-brand/50"
-                    }`}
-                    variant={plan.highlighted ? "default" : "outline"}
+                    className="w-full cursor-not-allowed opacity-50"
+                    variant="outline"
                     size="lg"
+                    disabled
                   >
                     {plan.cta}
                   </Button>
-                </Link>
+                ) : (
+                  <Link href={`/signup/${plan.id}`} className="w-full">
+                    <Button
+                      className={`w-full cursor-pointer transition-all duration-200 ${
+                        plan.highlighted
+                          ? "bg-brand text-background hover:bg-brand/90"
+                          : "border-brand/30 bg-transparent hover:bg-brand/10 hover:border-brand/50"
+                      }`}
+                      variant={plan.highlighted ? "default" : "outline"}
+                      size="lg"
+                    >
+                      {plan.cta}
+                    </Button>
+                  </Link>
+                )}
               </div>
             ))}
           </div>
