@@ -86,7 +86,7 @@ export default function SMSVerificationPage() {
         localStorage.setItem("verified_phone", phoneNumber);
         
         // Redirect to profile creation
-        router.push("/signup/free/profile");
+        router.push("/signup/profile");
       } else {
         setError(data.error || "Invalid verification code. Please try again.");
       }
