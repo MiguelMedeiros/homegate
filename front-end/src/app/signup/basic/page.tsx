@@ -243,7 +243,7 @@ export default function BasicPaymentPage() {
           </div>
         </div>
         {/* Payment Info or Continue Button */}
-        {!showSuccess ? (
+        {showSuccess ? (
           <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: "800ms" }}>
           <Button
             onClick={handleContinue}
