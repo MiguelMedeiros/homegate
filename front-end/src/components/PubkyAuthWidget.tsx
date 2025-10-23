@@ -28,7 +28,6 @@ export function PubkyAuthWidget({
 }: PubkyAuthWidgetProps) {
   const [pubkyZ32, setPubkyZ32] = useState<string>("");
   const [authUrl, setAuthUrl] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
   
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sdkRef = useRef<pubky.Pubky | null>(null);
@@ -53,7 +52,6 @@ export function PubkyAuthWidget({
   const generateFlow = useCallback(async () => {
     if (!sdkRef.current) return;
 
-    setIsLoading(true);
     setPubkyZ32("");
     setAuthUrl("");
 
@@ -74,7 +72,6 @@ export function PubkyAuthWidget({
       }, 50);
 
       // Stop loading once QR is ready
-      setIsLoading(false);
 
       // Wait for approval based on capabilities (this is async and will happen in background)
       if (caps && caps.trim().length > 0) {
@@ -93,7 +90,6 @@ export function PubkyAuthWidget({
     } catch (error) {
       console.error("Auth flow failed:", error);
       onError?.(error as Error);
-      setIsLoading(false);
     }
   }, [relay, caps, testnet, onSuccess, onError, updateQr]);
 

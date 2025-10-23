@@ -27,8 +27,8 @@ export default function BackupPage() {
   const { login } = useAuth();
   const [publicKey, setPublicKey] = useState<string>("");
   const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
-  const [keypair, setKeypair] = useState<any>(null);
-  const [session, setSession] = useState<any>(null);
+  const [keypair, setKeypair] = useState<unknown>(null);
+  const [session, setSession] = useState<unknown>(null);
   const [copied, setCopied] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(true);
 
@@ -136,7 +136,11 @@ export default function BackupPage() {
     
     try {
       // Create recovery file with password
-      const recoveryFile = pubkyService.createRecoveryFile(keypair, password);
+      if (!keypair || typeof keypair !== 'object') {
+        throw new Error('Invalid keypair');
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const recoveryFile = pubkyService.createRecoveryFile(keypair as any, password);
       
       // Create blob and download
       const blob = new Blob([recoveryFile as BlobPart], { type: 'application/octet-stream' });
@@ -528,7 +532,8 @@ export default function BackupPage() {
             <Button
               onClick={() => {
                 // Mark as authenticated with free plan
-                login("free", publicKey, seedPhrase, keypair, session);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                login("free", publicKey, seedPhrase, keypair as any, session as any);
                 // Clean up temporary data
                 localStorage.removeItem("pubky_signup_data");
                 // Navigate to dashboard

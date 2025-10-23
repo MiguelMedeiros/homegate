@@ -14,9 +14,9 @@ export interface OTPInputProps
 }
 
 const OTPInput = React.forwardRef<HTMLInputElement, OTPInputProps>(
-  ({ value, onChange, length = 6, separator, containerClassName, inputClassName, ...props }, ref) => {
+  ({ value, onChange, length = 6, separator, containerClassName, inputClassName, ...props }) => {
     const inputRefs = React.useRef<(HTMLInputElement | null)[]>([])
-    const [activeIndex, setActiveIndex] = React.useState<number>(-1)
+    const [, setActiveIndex] = React.useState<number>(-1)
 
     const handleInputChange = (index: number, inputValue: string) => {
       const newValue = value.split("")
@@ -59,7 +59,9 @@ const OTPInput = React.forwardRef<HTMLInputElement, OTPInputProps>(
         {Array.from({ length }, (_, index) => (
           <React.Fragment key={index}>
             <input
-              ref={(el) => (inputRefs.current[index] = el)}
+              ref={(el) => {
+                inputRefs.current[index] = el
+              }}
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"

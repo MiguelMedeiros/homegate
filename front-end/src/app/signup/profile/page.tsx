@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useProfile } from "@/contexts/ProfileContext";
-import { pubkyService, CreateUserResult, PubkyErrorInfo } from "@/lib/pubky";
+import { pubkyService, PubkyErrorInfo } from "@/lib/pubky";
 
 // Zod validation schema
 const profileSchema = z.object({
@@ -26,7 +26,6 @@ export default function ProfilePage() {
   const { setProfile } = useProfile();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [pubkyResult, setPubkyResult] = useState<CreateUserResult | null>(null);
   const [error, setError] = useState<PubkyErrorInfo | null>(null);
   const [smsVerified, setSmsVerified] = useState<boolean | null>(null);
 
@@ -102,7 +101,6 @@ export default function ProfilePage() {
       });
       
       // Store the result
-      setPubkyResult(result);
       
       // Save profile to context
       setProfile({

@@ -2,11 +2,10 @@ import React from 'react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 
-interface ActionButtonProps {
+interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'primary' | 'secondary';
   children: React.ReactNode;
   className?: string;
-  [key: string]: any;
 }
 
 const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProps>(
@@ -23,7 +22,7 @@ const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProps>(
         ref={ref}
         variant={variant === 'primary' ? 'default' : 'outline'}
         size="lg"
-        className={cn(baseClasses, variantClasses[variant], className)}
+        className={cn(baseClasses, variantClasses[variant as keyof typeof variantClasses], className as string)}
         {...props}
       >
         {children}

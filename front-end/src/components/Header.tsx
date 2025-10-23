@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
   rightContent?: React.ReactNode;
@@ -20,6 +19,7 @@ export function Header({ rightContent }: HeaderProps) {
             priority
           />
         </Link>
+        {rightContent}
       </nav>
     </header>
   );

@@ -14,9 +14,8 @@ export default function SMSVerificationPage() {
   const [verificationCode, setVerificationCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const [verificationId, setVerificationId] = useState("");
-  const [step, setStep] = useState<"phone" | "code">("code");
+  const [step, setStep] = useState<"phone" | "code">("phone");
 
   const handleSendSMS = async () => {
     if (!phoneNumber.trim()) {
@@ -41,7 +40,6 @@ export default function SMSVerificationPage() {
       if (response.ok && data.success) {
         setVerificationId(data.verificationId);
         setStep("code");
-        setSuccess(true);
       } else {
         setError(data.error || "Failed to send SMS. Please try again.");
       }
@@ -104,7 +102,6 @@ export default function SMSVerificationPage() {
     setStep("phone");
     setVerificationCode("");
     setError("");
-    setSuccess(false);
   };
 
   const formatPhoneNumber = (value: string) => {
