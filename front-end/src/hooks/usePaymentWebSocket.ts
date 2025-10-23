@@ -28,6 +28,7 @@ export function usePaymentWebSocket({
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const reconnectAttemptsRef = useRef(0);
   const maxReconnectAttempts = 5;
+  const connectRef = useRef<(() => void) | null>(null);
 
   const connect = useCallback(() => {
     if (!enabled || !externalId) return;
@@ -94,7 +95,7 @@ export function usePaymentWebSocket({
           console.log(`🔄 Reconnecting in ${delay}ms (attempt ${reconnectAttemptsRef.current}/${maxReconnectAttempts})...`);
           
           reconnectTimeoutRef.current = setTimeout(() => {
-            connect();
+            connectRef.current?.();
           }, delay);
         } else if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
           setError('Failed to connect after multiple attempts');
@@ -121,17 +122,26 @@ export function usePaymentWebSocket({
     setIsConnected(false);
   }, []);
 
-  // Connect on mount
+  // Update ref to always point to latest connect function
   useEffect(() => {
-    if (enabled && externalId) {
-      connect();
+    connectRef.current = connect;
+  }, [connect]);
+
+  // Connect on mount - wrapped in useEffect to avoid cascading renders
+  useEffect(() => {
+    if (!enabled || !externalId) return;
+
+    // Use ref to call connect to avoid warning
+    const connectFn = connectRef.current;
+    if (connectFn) {
+      connectFn();
     }
 
     // Cleanup on unmount
     return () => {
       disconnect();
     };
-  }, [externalId, enabled, connect, disconnect]);
+  }, [externalId, enabled, disconnect]);
 
   return {
     isConnected,

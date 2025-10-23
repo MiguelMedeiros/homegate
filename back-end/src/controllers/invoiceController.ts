@@ -21,7 +21,7 @@ interface PhoenixdInvoiceResponse {
 export async function createInvoice(req: Request, res: Response): Promise<void> {
   try {
     const {
-      amountSat = 50000,
+      amountSat = 100,
       description = 'Homeserver Signup - Basic Plan',
       externalId,
       expirySeconds = 3600, // 1 hour default

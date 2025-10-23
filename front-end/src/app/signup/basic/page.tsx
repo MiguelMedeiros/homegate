@@ -52,7 +52,7 @@ export default function BasicPaymentPage() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            amountSat: 1,
+            amountSat: 100,
             description: 'Homeserver Signup - Basic Plan',
             externalId: sessionId.current,
           }),
