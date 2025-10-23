@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
   rightContent?: React.ReactNode;
@@ -20,23 +19,7 @@ export function Header({ rightContent }: HeaderProps) {
             priority
           />
         </Link>
-        
-        <div className="flex items-center gap-3">
-          {rightContent || (
-            <>
-              <Link href="/about">
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                  About
-                </Button>
-              </Link>
-              <Link href="/docs">
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                  Docs
-                </Button>
-              </Link>
-            </>
-          )}
-        </div>
+        {rightContent}
       </nav>
     </header>
   );
