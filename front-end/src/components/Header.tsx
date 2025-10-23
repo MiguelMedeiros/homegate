@@ -9,7 +9,7 @@ export function Header({ rightContent }: HeaderProps) {
   return (
     <header className="border-b border-border/50 backdrop-blur-sm">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-80">
+        <Link href="/" className="flex flex-1 items-center gap-3 transition-opacity hover:opacity-80">
           <Image 
             src="/homegate_with.svg" 
             alt="Homegate Logo" 
