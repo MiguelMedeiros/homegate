@@ -27,7 +27,10 @@ home-gate/
 │   ├── src/          # Application source code
 │   ├── public/       # Static assets
 │   └── README.md     # Frontend documentation
-└── [future packages]  # Additional packages will go here
+├── back-end/          # Express.js API server
+│   ├── src/          # Backend source code
+│   └── README.md     # Backend documentation
+└── phoenixd/          # Phoenix Lightning node data (git-ignored)
 ```
 
 ## Packages
@@ -50,6 +53,24 @@ npm run dev
 ```
 
 See [front-end/README.md](./front-end/README.md) for detailed documentation.
+
+### ⚙️ Back-end
+Express.js REST API server for handling Lightning invoices and payments.
+
+**Tech Stack:**
+- Express.js 4
+- TypeScript 5
+- Phoenix daemon integration
+- CORS enabled
+
+**Get Started:**
+```bash
+cd back-end
+npm install
+npm run dev
+```
+
+See [back-end/README.md](./back-end/README.md) for detailed documentation.
 
 ## Development
 
@@ -74,6 +95,7 @@ docker compose up -d  # Start in background
 
 **Access the application:**
 - Frontend: http://localhost:3000
+- Backend API: http://localhost:4000
 - phoenixd API: http://localhost:9740
 
 **Other useful commands:**
@@ -107,8 +129,9 @@ npm run dev
 ## Monorepo Structure
 
 This is set up as a monorepo to accommodate multiple packages:
-- **front-end**: Web application
-- **[future]**: Backend services, shared libraries, etc.
+- **front-end**: Next.js web application
+- **back-end**: Express.js API server
+- **phoenixd**: Lightning Network node (managed by Docker)
 
 ## Docker Services
 
@@ -119,6 +142,13 @@ The project includes Docker Compose configuration with the following services:
 - **Container**: Next.js 15 application
 - **Features**: Hot reload, volume mounting for live development
 - **Image**: Custom build from `front-end/Dockerfile`
+
+### ⚙️ Backend Service
+- **Port**: 4000
+- **Container**: Express.js API server
+- **Features**: Hot reload with ts-node-dev, REST API endpoints
+- **Image**: Custom build from `back-end/Dockerfile`
+- **Endpoints**: `/api/invoice`, `/health`
 
 ### ⚡ phoenixd Service
 - **Port**: 9740
@@ -136,11 +166,13 @@ The project includes Docker Compose configuration with the following services:
 | `make down` | Stop all services |
 | `make logs` | View all logs |
 | `make frontend` | View frontend logs only |
+| `make backend` | View backend logs only |
 | `make phoenixd` | View phoenixd logs only |
 | `make restart` | Restart all services |
 | `make build` | Rebuild services |
 | `make clean` | Stop and remove everything |
 | `make shell` | Open shell in frontend container |
+| `make shell-be` | Open shell in backend container |
 | `make help` | Show all available commands |
 
 > 💡 **Tip**: Use `make dev` for active development to see logs in real-time.

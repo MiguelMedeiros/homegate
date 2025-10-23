@@ -15,7 +15,6 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@synonymdev/pubky": "^0.6.0-rc.6",
     "@types/qrcode": "^1.5.5",
-    "@types/ws": "^8.18.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.546.0",
@@ -25,7 +24,6 @@
     "react-dom": "19.2.0",
     "react-hook-form": "^7.65.0",
     "tailwind-merge": "^3.3.1",
-    "ws": "^8.18.3",
     "zod": "^4.1.12"
   },
   "devDependencies": {

@@ -10,6 +10,23 @@ services:
       - "./phoenixd:/phoenix/.phoenix"
     restart: unless-stopped
 
+  backend:
+    container_name: backend
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - phoenixd
+    volumes:
+      - ./back-end:/app
+      - /app/node_modules
+      - /app/dist
+    restart: unless-stopped
+    env_file:
+      - ./back-end/.env
+
   frontend:
     container_name: frontend
     build:
@@ -18,6 +35,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
+      - backend
       - phoenixd
     volumes:
       - ./front-end:/app
@@ -26,4 +44,5 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=development
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:4000
 

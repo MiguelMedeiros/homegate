@@ -1,4 +1,4 @@
-.PHONY: help up down restart logs build clean frontend phoenixd
+.PHONY: help up down restart logs build clean frontend backend phoenixd
 
 # Default target
 help:
@@ -14,11 +14,13 @@ help:
 	@echo ""
 	@echo "Service-specific commands:"
 	@echo "  make frontend    - View frontend logs"
+	@echo "  make backend     - View backend logs"
 	@echo "  make phoenixd    - View phoenixd logs"
 	@echo ""
 	@echo "Development commands:"
 	@echo "  make dev         - Start services in development mode"
 	@echo "  make shell       - Open shell in frontend container"
+	@echo "  make shell-be    - Open shell in backend container"
 
 # Start all services
 up:
@@ -48,6 +50,10 @@ build:
 frontend:
 	docker compose logs -f frontend
 
+# Backend logs
+backend:
+	docker compose logs -f backend
+
 # phoenixd logs
 phoenixd:
 	docker compose logs -f phoenixd
@@ -60,6 +66,10 @@ clean:
 # Shell access to frontend
 shell:
 	docker compose exec frontend sh
+
+# Shell access to backend
+shell-be:
+	docker compose exec backend sh
 
 # Install npm packages in frontend
 install:
