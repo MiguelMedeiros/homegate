@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,6 @@ export default function ProfilePage() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<PubkyErrorInfo | null>(null);
-  const [smsVerified, setSmsVerified] = useState<boolean | null>(null);
 
   const {
     register,
@@ -122,61 +121,6 @@ export default function ProfilePage() {
     }
   };
 
-  const handleSkipVerification = () => {
-    // Skip SMS verification for development
-    localStorage.setItem("sms_verified", "true");
-    localStorage.setItem("verified_phone", "dev-skip");
-    setSmsVerified(true);
-  };
-
-  // Show loading state while checking SMS verification
-  if (smsVerified === null) {
-    return (
-      <div className="relative flex min-h-screen flex-col bg-background">
-        {/* Background */}
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-size-[4rem_4rem]" />
-        <div className="absolute inset-0 -z-10 bg-linear-to-br from-brand/5 via-transparent to-brand/10" />
-        
-        <Header 
-          rightContent={
-            <Link href="/signup/free">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-                Back
-              </Button>
-            </Link>
-          }
-        />
-
-        {/* Main Content */}
-        <main className="container relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-16 mx-auto">
-          <div className="mx-auto flex w-full max-w-md flex-col items-center text-center">
-            <div className="h-16 w-16 animate-spin rounded-full border-4 border-brand/20 border-t-brand"></div>
-            <p className="mt-4 text-muted-foreground">Verifying SMS...</p>
-            
-            {/* Skip Verification Button (Development Only) */}
-            {process.env.NODE_ENV === 'development' && (
-              <Button
-                onClick={handleSkipVerification}
-                variant="outline"
-                size="sm"
-                className="mt-8 border-yellow-500/20 text-yellow-500 hover:border-yellow-500/50 hover:bg-yellow-500/5"
-              >
-                🧪 Skip SMS Verification (Dev)
-              </Button>
-            )}
-          </div>
-        </main>
-
-        <Footer />
-      </div>
-    );
-  }
-
-  // Don't render the form if SMS is not verified
-  if (smsVerified === false) {
-    return null; // Will redirect to SMS verification
-  }
-
   return (
     <div className="relative flex min-h-screen flex-col bg-background">
       {/* Background */}
@@ -185,7 +129,7 @@ export default function ProfilePage() {
       
       <Header 
         rightContent={
-          <Link href="/signup/free/verify">
+          <Link href="/signup/free">
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
               Back
             </Button>
