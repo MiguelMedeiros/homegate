@@ -99,6 +99,8 @@ export default function SignInPage() {
       const keypair = PubkyService.restoreFromRecoveryFile(recoveryData, passphrase);
       const publicKey = keypair.publicKey.z32();
 
+      console.log("Public key:", publicKey);
+
       // Create a session with the restored keypair
       const pubky = new Pubky();
       const signer = pubky.signer(keypair);
@@ -108,6 +110,7 @@ export default function SignInPage() {
       // Try to load the user's profile from storage
       try {
         const profile = await pubkyService.getProfile(session);
+        console.log("Profile:", profile);
         if (profile) {
           setProfile(profile);
         }
