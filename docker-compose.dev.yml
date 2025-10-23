@@ -1,8 +1,8 @@
-name: home-gate
+name: home-gate-dev
 
 services:
   phoenixd:
-    container_name: phoenixd
+    container_name: phoenixd-dev
     image: acinq/phoenixd:latest
     ports:
       - "9740:9740"
@@ -11,10 +11,10 @@ services:
     restart: unless-stopped
 
   backend:
-    container_name: backend
+    container_name: backend-dev
     build:
       context: ./back-end
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "8881:8881"
     depends_on:
@@ -26,12 +26,14 @@ services:
     restart: unless-stopped
     env_file:
       - ./back-end/.env
+    environment:
+      - NODE_ENV=development
 
   frontend:
-    container_name: frontend
+    container_name: frontend-dev
     build:
       context: ./front-end
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "8882:8882"
     depends_on:
@@ -45,6 +47,6 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=8882
-      - NEXT_PUBLIC_BACKEND_URL=https://homegate-api.miguelmedeiros.dev
-      - NEXT_PUBLIC_WS_URL=wss://homegate-api.miguelmedeiros.dev/ws
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:8881
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8881/ws
 

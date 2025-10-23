@@ -1,0 +1,61 @@
+.PHONY: help up down restart logs build clean frontend backend phoenixd
+
+# Production Makefile
+help:
+	@echo "Home Gate - Production Environment"
+	@echo ""
+	@echo "Available commands:"
+	@echo "  make up          - Start all services (production mode)"
+	@echo "  make down        - Stop all services"
+	@echo "  make restart     - Restart all services"
+	@echo "  make logs        - View logs (all services)"
+	@echo "  make build       - Build/rebuild services"
+	@echo "  make clean       - Stop and remove all containers"
+	@echo ""
+	@echo "Service-specific commands:"
+	@echo "  make frontend    - View frontend logs"
+	@echo "  make backend     - View backend logs"
+	@echo "  make phoenixd    - View phoenixd logs"
+
+# Start all services (production)
+up:
+	docker compose -f docker-compose.prod.yml up -d
+
+# Stop all services
+down:
+	docker compose -f docker-compose.prod.yml down
+
+# Restart all services
+restart:
+	docker compose -f docker-compose.prod.yml restart
+
+# View all logs
+logs:
+	docker compose -f docker-compose.prod.yml logs -f
+
+# Build/rebuild services
+build:
+	docker compose -f docker-compose.prod.yml up --build -d
+
+# Frontend logs
+frontend:
+	docker compose -f docker-compose.prod.yml logs -f frontend
+
+# Backend logs
+backend:
+	docker compose -f docker-compose.prod.yml logs -f backend
+
+# phoenixd logs
+phoenixd:
+	docker compose -f docker-compose.prod.yml logs -f phoenixd
+
+# Clean everything
+clean:
+	docker compose -f docker-compose.prod.yml down -v
+
+# Deploy (build and restart)
+deploy:
+	@echo "Building and deploying production..."
+	docker compose -f docker-compose.prod.yml up --build -d
+	@echo "Production deployed successfully!"
+

@@ -1,0 +1,44 @@
+name: home-gate-prod
+
+services:
+  phoenixd:
+    container_name: phoenixd-prod
+    image: acinq/phoenixd:latest
+    ports:
+      - "9740:9740"
+    volumes:
+      - "./phoenixd:/phoenix/.phoenix"
+    restart: unless-stopped
+
+  backend:
+    container_name: backend-prod
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8881:8881"
+    depends_on:
+      - phoenixd
+    restart: unless-stopped
+    env_file:
+      - ./back-end/.env.production
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    container_name: frontend-prod
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8882:8882"
+    depends_on:
+      - backend
+      - phoenixd
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=8882
+      - NEXT_PUBLIC_BACKEND_URL=https://homegate-api.miguelmedeiros.dev
+      - NEXT_PUBLIC_WS_URL=wss://homegate-api.miguelmedeiros.dev/ws
+

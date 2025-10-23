@@ -1,0 +1,20 @@
+# Development Dockerfile for Frontend (Next.js)
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies (including dev dependencies)
+RUN npm install
+
+# Copy the rest of the application
+COPY . .
+
+# Expose port
+EXPOSE 8882
+
+# Start development server with hot reload
+CMD ["npm", "run", "dev"]
+

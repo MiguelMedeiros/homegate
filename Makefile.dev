@@ -1,0 +1,69 @@
+.PHONY: help up down restart logs build clean frontend backend phoenixd shell shell-be
+
+# Development Makefile
+help:
+	@echo "Home Gate - Development Environment"
+	@echo ""
+	@echo "Available commands:"
+	@echo "  make up          - Start all services (development mode)"
+	@echo "  make down        - Stop all services"
+	@echo "  make restart     - Restart all services"
+	@echo "  make logs        - View logs (all services)"
+	@echo "  make build       - Build/rebuild services"
+	@echo "  make clean       - Stop and remove all containers"
+	@echo ""
+	@echo "Service-specific commands:"
+	@echo "  make frontend    - View frontend logs"
+	@echo "  make backend     - View backend logs"
+	@echo "  make phoenixd    - View phoenixd logs"
+	@echo "  make shell       - Open shell in frontend container"
+	@echo "  make shell-be    - Open shell in backend container"
+
+# Start all services (development)
+up:
+	docker compose -f docker-compose.dev.yml up -d
+
+# Start in foreground
+dev:
+	docker compose -f docker-compose.dev.yml up
+
+# Stop all services
+down:
+	docker compose -f docker-compose.dev.yml down
+
+# Restart all services
+restart:
+	docker compose -f docker-compose.dev.yml restart
+
+# View all logs
+logs:
+	docker compose -f docker-compose.dev.yml logs -f
+
+# Build/rebuild services
+build:
+	docker compose -f docker-compose.dev.yml up --build -d
+
+# Frontend logs
+frontend:
+	docker compose -f docker-compose.dev.yml logs -f frontend
+
+# Backend logs
+backend:
+	docker compose -f docker-compose.dev.yml logs -f backend
+
+# phoenixd logs
+phoenixd:
+	docker compose -f docker-compose.dev.yml logs -f phoenixd
+
+# Clean everything
+clean:
+	docker compose -f docker-compose.dev.yml down -v
+
+# Shell access to frontend
+shell:
+	docker compose -f docker-compose.dev.yml exec frontend sh
+
+# Shell access to backend
+shell-be:
+	docker compose -f docker-compose.dev.yml exec backend sh
+
