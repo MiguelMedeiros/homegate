@@ -124,7 +124,7 @@ export default function SMSVerificationPage() {
       
       <Header 
         rightContent={
-          <Link href="/signup/free">
+          <Link href="/signup">
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
               Back
             </Button>
