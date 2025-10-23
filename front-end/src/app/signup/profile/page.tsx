@@ -29,24 +29,6 @@ export default function ProfilePage() {
   const [error, setError] = useState<PubkyErrorInfo | null>(null);
   const [smsVerified, setSmsVerified] = useState<boolean | null>(null);
 
-  // Check SMS verification status on component mount
-  useEffect(() => {
-    const checkSmsVerification = () => {
-      const verified = localStorage.getItem("sms_verified");
-      const phone = localStorage.getItem("verified_phone");
-      
-      if (verified === "true" && phone) {
-        setSmsVerified(true);
-      } else {
-        setSmsVerified(false);
-        // Redirect to SMS verification if not verified
-        router.push("/signup/free/verify");
-      }
-    };
-
-    checkSmsVerification();
-  }, [router]);
-
   const {
     register,
     handleSubmit,
