@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 
+const INVITE_TOKENS_ADMIN_PASSWORD = process.env.INVITE_TOKENS_ADMIN_PASSWORD || '';
+
 export async function GET() {
   try {
     const response = await fetch('https://admin.homeserver.staging.pubky.app/generate_signup_token', {
       method: 'GET',
       headers: {
-        'X-Admin-Password': 'voyage tuition cabin arm stock guitar soon salute',
+        'X-Admin-Password': INVITE_TOKENS_ADMIN_PASSWORD,
         'Content-Type': 'application/json',
       },
     });
